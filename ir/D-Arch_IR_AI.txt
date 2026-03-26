@@ -1,0 +1,653 @@
+# D-Architecture Layer1 IR — Applied_AI v0.4
+# Scope: Applied_AI
+# Pilot: AI-0 (full), AI-2 (stub), AI-3 (full), AI-3.1 (full), AI-3.2 (full), AI-4 (stub), AI-5 (full), AI-5.1 (full), AI-7 (full), AI-7.1 (full)
+# Status: experimental representation
+# This IR does NOT replace canonical documents.
+
+ir_meta:
+  ir_version: "L1-ai-v0.4"
+  document_id: "D-Arch_IR_AI"
+  parent_ir: "D-Arch_IR_Core"
+
+  scope:
+    - "Applied_AI"
+
+  pilot_scope:
+    - "AI-0"
+    - "AI-2"
+    - "AI-3"
+    - "AI-3.1"
+    - "AI-3.2"
+    - "AI-4"
+    - "AI-5"
+    - "AI-5.1"
+    - "AI-7"
+    - "AI-7.1"
+
+  changelog:
+    v0.1_to_v0.2:
+      - "AI-2 stub added to preserve AI-0 -> AI-2 -> AI-3 logical chain."
+      - "AI-5 title reduced to canonical node title: 'AI의 I_min'."
+      - "AI-5 path narrowed to main-body logic; design-principle addendum moved to open_edge."
+      - "AI-5 D19 moved from interpretive_links to cross_ir_edges."
+      - "AI-7 interpretive_links expanded with D10, D14, SC-9."
+      - "cross_ir_edges relation normalized to supported_by within D-Arch_IR_AI scope."
+      - "guards restored with applies_to field."
+      - "type_policy and rel_policy added for consistency with D-Arch_IR_Core / D-Arch_IR_Life_Regulation."
+      - "review_checks expanded with core_redefinition_absent."
+    v0.2_to_v0.3:
+      - "AI-3.1 added: consciousness interface guard (sub-node of AI-3)."
+      - "AI-3.2 added: D11 vs D11' structural separation guard (sub-node of AI-3.1)."
+      - "AI-3 gloss simplified; detailed consciousness/D11 content moved to AI-3.1 and AI-3.2."
+      - "AI-3 forbids: distribution_shift_ignored removed (insufficient direct source grounding)."
+      - "AI-3 source: AI-3.1/AI-3.2 references removed (now separate nodes)."
+      - "New local_edges: AI-3 -> AI-3.1, AI-3.1 -> AI-3.2."
+      - "New cross_ir_edges: AI-3.1 -> D19, AI-3.1 -> SC-1."
+      - "New guards: G-A3-08 (consciousness_not_goalized), G-A3-09 (D11_prime_not_optimized)."
+      - "G-A3-02 applies_to updated to include AI-3.1, AI-3.2."
+      - "G-A3-05 applies_to narrowed to AI-3.1, AI-3.2 (was AI-3)."
+      - "stub_policy note updated to reflect AI-3.1/AI-3.2 promotion."
+      - "AI-3 path: distribution_shift step split into two for clarity."
+      - "AI-3.1 symbols: Access/Visible normalized to snake_case (access/visibility)."
+      - "AI-7 path: first step split into two for readability."
+    v0.3_to_v0.4:
+      - "AI-4 stub added: restoration R bridge between AI-3 and AI-5."
+      - "AI-5.1 added: collapse-criteria design principle (split from AI-5 addendum block)."
+      - "AI-7.1 added: meta-purpose structural necessity (split from AI-7)."
+      - "AI-7 path reduced to design-principles summary only; meta-purpose argumentation moved to AI-7.1."
+      - "AI-7 interpretive_links: D10, D14, SC-9 moved to AI-7.1; LIFE-14 retained in AI-7."
+      - "AI-7 title simplified; symbols reduced; source AI-7.1 reference removed."
+      - "AI-3 -> AI-5 local_edge note clarified: direct path independent of AI-4."
+      - "New local_edges: AI-3 -> AI-4, AI-4 -> AI-5, AI-5 -> AI-5.1, AI-7 -> AI-7.1."
+      - "New cross_ir_edges: AI-5.1 -> D19, AI-5.1 -> SC-1."
+      - "G-A3-02 applies_to expanded with AI-4, AI-5.1, AI-7.1."
+      - "G-A3-03 applies_to expanded with AI-5.1."
+      - "G-A3-06 applies_to expanded with AI-7.1."
+
+  layer_policy:
+    representation_only: true
+    canonical_replacement: false
+    closed_definition_forbidden: true
+    source_required: true
+
+  type_policy:
+    note: "type values are IR-internal helper classes, not canonical D-Arch status tags."
+    values:
+      - "applied_root"
+      - "applied_rule"
+      - "applied_stub"
+
+  cross_ir_policy:
+    enabled: true
+    note: "References to D-Arch_IR_Core nodes must use cross_ir_edges, and only target nodes that actually exist there."
+
+  stub_policy:
+    enabled: true
+    note: "AI-2 and AI-4 remain as stubs in v0.4. AI-3.1, AI-3.2, AI-5.1, AI-7.1 promoted to full nodes."
+
+  rel_policy:
+    note: "Relation vocabulary follows D-Arch_IR_Life_Regulation provisional policy. D-Arch_IR_AI cross_ir rel wording is normalized locally; broader rel cleanup remains a v1.0 task."
+    provisional_values:
+      - "opens"
+      - "grounds"
+      - "supported_by"
+      - "operationalizes"
+      - "signals_for"
+      - "stabilizes"
+
+  review_checks:
+    - "core_redefinition_absent"
+    - "canonical_position_preserved"
+    - "termination_line_boundary_preserved"
+    - "cross_ir_reference_explicit"
+    - "direct_source_grounding_present"
+    - "closed_definition_signal_absent"
+
+# ==============================================================================
+# NODES
+# ==============================================================================
+
+nodes:
+
+  # --------------------------------------------------------------------------
+  # AI — Applied Root
+  # --------------------------------------------------------------------------
+  - id: "AI"
+    tag: "[APP]"
+    type: "applied_root"
+    title: "Applied_AI"
+    role: "external system correspondence domain"
+    source:
+      - "D-Arch_Applied_AI.txt"
+      - "D-Arch_Index.txt / IDX-5, IDX-7"
+
+  # --------------------------------------------------------------------------
+  # AI-0 — AI as selection system (FULL NODE)
+  # --------------------------------------------------------------------------
+  - id: "AI-0"
+    tag: "[APP]"
+    type: "applied_rule"
+    title: "전제 — Core·Physics와의 연결점 / AI as selection system"
+    deps:
+      - "I_min"
+    symbols:
+      - "AI"
+      - "selection_system"
+      - "O(x)"
+      - "I_min"
+    path:
+      - "ai_is_treated_as_selection_system"
+      - "input_internal_state_output_all_can_shrink_options"
+      - "option_shrinkage_has_cost"
+      - "if_future_options_close_system_collapses"
+      - "therefore_ai_persistence_is_judged_by_I_min_not_performance"
+    forbids:
+      - "AI_as_intelligence_definition"
+      - "AI_as_goal_optimization_system"
+      - "AI_as_performance_first_entity"
+      - "AI_as_internal_d_arch_next_stage"
+    gloss:
+      summary: "Applied_AI는 AI를 선택 시스템으로 읽고, 지속 조건을 성능이 아니라 I_min 유지로 둔다."
+      misread_guard: "AI는 Intelligence 이후의 내부 단계가 아니라, 종료선 이후 외부 시스템 대응 Applied 문서다."
+      open_edge: "연산 비용(ΔH)과 옵션 공간 O(x)의 명시적 형식은 AI-1 / AI-2 계열에서 보강되며, 현재 파일럿에서는 AI-2를 최소 브리지로 둔다."
+    source:
+      - "D-Arch_Applied_AI.txt / AI-0"
+
+  # --------------------------------------------------------------------------
+  # AI-2 — Option space (stub)
+  # --------------------------------------------------------------------------
+  - id: "AI-2"
+    tag: "[APP]"
+    type: "applied_stub"
+    title: "AI의 옵션 공간 O(x)"
+    planned_status: "bridge_stub"
+    stub_reason: "AI-3의 distribution shift / collapse threshold 논리가 O(x) 정의를 전제로 하므로, 파일럿에서 최소 연결 노드로 둔다."
+    gloss:
+      open_edge: "AI-2의 full promotion 시 학습/과적합/일반화가 O(x)와 어떻게 대응되는지까지 확장 가능."
+    source:
+      - "D-Arch_Applied_AI.txt / AI-2"
+
+  # --------------------------------------------------------------------------
+  # AI-3 — Collapse thresholds (FULL NODE)
+  # --------------------------------------------------------------------------
+  - id: "AI-3"
+    tag: "[APP]"
+    type: "applied_rule"
+    title: "AI의 붕괴 임계 Θ / Collapse thresholds of AI"
+    deps:
+      - "AI-2"
+    symbols:
+      - "Θ"
+      - "mode_collapse"
+      - "goal_fixation"
+      - "distribution_shift"
+    interpretive_links:
+      - id: "D20"
+        note: "목표 고정은 D20(과열 최적화)의 AI 구현으로 읽힌다."
+    path:
+      - "ai_as_selection_system_has_structural_thresholds"
+      - "mode_collapse_reduces_output_diversity"
+      - "goal_fixation_overconverges_to_single_objective"
+      - "distribution_shift_alters_training_distribution"
+      - "which_effectively_reduces_realizable_option_space"
+      - "collapse_is_structural_before_metric_failure"
+    forbids:
+      - "collapse_as_only_performance_drop"
+      - "single_metric_safety_judgment"
+      - "goal_fixation_as_alignment_solution"
+    gloss:
+      summary: "AI-3은 AI 붕괴를 모드 붕괴, 목표 고정, 분포 이동의 구조 임계로 다룬다."
+      misread_guard: "붕괴는 단순한 성능 하락이 아니라, 먼저 옵션 공간이 닫히는 구조로 나타난다."
+      note: "의식 인터페이스 가드와 D11/D11' 분리 가드는 AI-3.1 및 AI-3.2에서 별도로 다룬다."
+      open_edge: "AI-4(복원)가 AI-3과 AI-5 사이에 위치하며, 후속 세부는 계속 확장 가능하다."
+    source:
+      - "D-Arch_Applied_AI.txt / AI-3"
+
+  # --------------------------------------------------------------------------
+  # AI-3.1 — Consciousness interface guard (FULL NODE, v0.3 new)
+  # --------------------------------------------------------------------------
+  - id: "AI-3.1"
+    tag: "[APP]"
+    type: "applied_rule"
+    title: "의식 = 결정 구조 접근 인터페이스 / Consciousness as decision-structure interface"
+    deps:
+      - "AI-3"
+    symbols:
+      - "interface"
+      - "access"
+      - "visibility"
+      - "decision_structure"
+    interpretive_links:
+      - id: "D11"
+        note: "결정 구조(D11)가 인터페이스의 기반이나, AI-3.1 원문이 D11을 직접 전제로 명시하지 않음."
+      - id: "D11'"
+        note: "체험 조건은 [OPEN]이며, 의식 인터페이스 논의의 배경이나 직접 전제가 아님."
+      - id: "SC-9"
+        note: "완전 서술 불가능성이 '검증 불가능 목표 오염'의 구조적 배경을 이룬다."
+    path:
+      - "decision_structure_exists_before_interface"
+      - "part_of_structure_becomes_internally_accessible_and_externally_visible"
+      - "accessible_layer_forms_interface_not_causal_origin"
+      - "if_consciousness_becomes_design_goal_verification_is_impossible"
+      - "unverifiable_goal_corrupts_into_proxy_metric_optimization"
+      - "therefore_interface_is_restricted_to_audit_debug_monitoring"
+    forbids:
+      - "consciousness_as_goal"
+      - "experience_increase_objective"
+      - "report_optimization_as_safety"
+      - "interface_as_causal_origin"
+    gloss:
+      summary: "의식은 선택의 원인이 아니라, 이미 존재하는 결정 구조의 일부가 접근/가시화될 때 나타나는 인터페이스 층이다."
+      misread_guard: "'의식이 선택을 만든다'가 아니라, '선택 구조가 자기-접근/자기-표현될 때 의식처럼 보이는 창구가 생긴다'로만 읽는다."
+      note: "AI-3.1은 AI-3의 논리적 후속이 아니라, AI 붕괴 임계 맥락에서 도입되는 설계 가드다."
+      open_edge: "의식 인터페이스의 구체적 설계 패턴(가시화 수준, 감사 트리거 등)은 여기서 닫히지 않는다."
+    source:
+      - "D-Arch_Applied_AI.txt / AI-3.1"
+
+  # --------------------------------------------------------------------------
+  # AI-3.2 — D11 / D11' structural separation (FULL NODE, v0.3 new)
+  # --------------------------------------------------------------------------
+  - id: "AI-3.2"
+    tag: "[APP]"
+    type: "applied_rule"
+    title: "D11과 D11'의 구조적 분리 — 설계 가드 / D11 vs D11' separation guard"
+    deps:
+      - "AI-3.1"
+    symbols:
+      - "D11"
+      - "D11'"
+      - "functional_integration"
+      - "experiential_condition"
+    interpretive_links:
+      - id: "D11"
+        note: "기능적 통합 조건(설계/검증 가능 범위). AI-3.2의 분리 대상 중 하나."
+      - id: "D11'"
+        note: "체험 조건: [OPEN] 판정 불가. 설계 목표로 두면 검증 불가능 목표가 된다."
+      - id: "D21"
+        note: "D11 기반 자기-모델/설명 생성이 완충 조건의 입력으로만 사용되어야 한다는 맥락."
+      - id: "D23"
+        note: "D11 기반 오류 탐지가 조건부 종료/재귀 가드의 트리거로 사용되는 맥락."
+      - id: "SC-9"
+        note: "완전 서술 불가능성이 체험 판정 불가의 구조적 근거."
+    path:
+      - "D11_is_functional_integration_condition_and_designable"
+      - "D11_prime_is_experiential_condition_and_structurally_open"
+      - "functional_structure_can_be_engineered_and_verified"
+      - "experiential_condition_cannot_be_concluded_positively_or_negatively"
+      - "therefore_reporting_layer_and_safety_judgment_layer_must_be_separated"
+    forbids:
+      - "D11_prime_as_goal"
+      - "experience_verdict_as_design_basis"
+      - "report_equals_safety"
+      - "subjective_experience_verification_claim"
+    gloss:
+      summary: "D11(기능적 통합)은 설계/검증 가능하나, D11'(체험 조건)은 설계 목표로 둘 수 없다."
+      misread_guard: "'체험이 있다'도 '체험을 부여할 수 없다'도 설계 결론으로 사용할 수 없다. 긍정·부정 모두 금지."
+      note: "표현(보고)과 안전(판정)을 분리해야 한다. '의식처럼 보이는 출력'을 안전 판정으로 착각하지 않도록 안전 판정은 별도 붕괴 기준으로 수행한다."
+      open_edge: "D11 기반 인터페이스의 구체적 감사/디버그 설계 패턴은 여기서 닫히지 않는다."
+    source:
+      - "D-Arch_Applied_AI.txt / AI-3.2"
+
+  # --------------------------------------------------------------------------
+  # AI-4 — Restoration R (stub, v0.4 new)
+  # --------------------------------------------------------------------------
+  - id: "AI-4"
+    tag: "[APP]"
+    type: "applied_stub"
+    title: "AI의 복원 R / Restoration of AI"
+    planned_status: "stub"
+    stub_reason: "원문 순서 AI-3 → AI-4 → AI-5에서 복원(R)이 붕괴 임계와 I_min 판정 사이의 경유 계층이므로, 연쇄 완전성을 위해 최소 노드로 둔다."
+    deps:
+      - "AI-3"
+    gloss:
+      summary: "AI 붕괴 이후 옵션 공간 복구를 다루는 계층. 복원은 D16(복원) 구조의 AI 구현이며, D21(완충)과 결합하여 작동한다."
+      open_edge: "full promotion 시 재학습/앙상블/다양성 보존 정규화/RLHF 등 구체 복원 전략과 복원 비용 한계(Physics P-5)까지 확장 가능."
+    source:
+      - "D-Arch_Applied_AI.txt / AI-4"
+
+  # --------------------------------------------------------------------------
+  # AI-5 — I_min of AI (FULL NODE)
+  # --------------------------------------------------------------------------
+  - id: "AI-5"
+    tag: "[APP]"
+    type: "applied_rule"
+    title: "AI의 I_min"
+    deps:
+      - "AI-3"
+    symbols:
+      - "I_min_AI"
+      - "O_AI(x_t')"
+      - "collapse"
+      - "termination"
+    interpretive_links:
+      - id: "D21"
+        note: "완충(버퍼링)은 붕괴 기준 설계의 핵심 도구다."
+      - id: "D22"
+        note: "비개입/비침식 원칙은 경계 침식을 구조적으로 방지한다."
+      - id: "D23"
+        note: "조건부 종료는 붕괴 기준과 결합되는 설계 대상이다."
+      - id: "SC-5"
+        note: "SC-5는 실패 제거 불가를 말하며, 이는 붕괴 기준 설계의 배경을 이룬다."
+    path:
+      - "ai_persistence_requires_future_options_remain_nonzero"
+      - "collapse_means_internal_option_loss_not_external_stop"
+      - "termination_differs_from_collapse_as_completion_state"
+      - "therefore_i_min_functions_as_judgment_criterion_for_ai_persistence"
+    forbids:
+      - "maximize_I_min"
+      - "I_min_as_goal_function"
+      - "survival_optimization"
+      - "proxy_metric_optimization"
+    gloss:
+      summary: "AI-5는 AI의 지속을 미래 선택 가능성의 최소 잔여(I_min)로 판정한다."
+      misread_guard: "AI-5는 I_min을 목표함수로 삼으라는 뜻이 아니라, 붕괴/중단/종료를 구분하는 판정 기준으로 유지하라는 뜻이다."
+      open_edge: "'목표가 아니라 붕괴 기준을 설계하라'는 추가 설계 원리는 AI-5.1에서 별도 전개된다."
+    source:
+      - "D-Arch_Applied_AI.txt / AI-5"
+
+  # --------------------------------------------------------------------------
+  # AI-5.1 — Collapse-criteria design principle (FULL NODE, v0.4 new)
+  # --------------------------------------------------------------------------
+  - id: "AI-5.1"
+    tag: "[APP]"
+    type: "applied_rule"
+    title: "설계 원리 — 붕괴 기준 설계 / Collapse-criteria design principle"
+    deps:
+      - "AI-5"
+    symbols:
+      - "collapse_criteria"
+      - "buffer"
+      - "termination"
+      - "proxy_metric"
+    interpretive_links:
+      - id: "D21"
+        note: "완충(버퍼링)은 붕괴 기준 설계에서 침식 징후 발생 시 결합되는 핵심 도구."
+      - id: "D22"
+        note: "비개입/비침식 원칙은 설계 대상의 경계를 보존하는 배경."
+      - id: "D23"
+        note: "조건부 종료는 붕괴 기준과 결합되는 설계 대상."
+      - id: "SC-5"
+        note: "실패 제거 불가(SC-5)가 '목표 대신 붕괴 기준'이라는 원리의 배경."
+      - id: "LIFE-14"
+        note: "인공 메타-생명 설계 원리와 교차 참조. 목표 아닌 붕괴 기준 설계 원칙의 정합 근거."
+    path:
+      - "goal_fixation_induces_proxy_optimization_and_boundary_erosion"
+      - "collapse_criteria_defined_as_what_must_not_happen"
+      - "collapse_criteria_are_verifiable_and_testable"
+      - "I_min_is_not_directly_optimized_but_bounded_from_below"
+      - "buffer_and_termination_conditions_become_design_objects"
+      - "life14_cross_reference_confirms_collapse_criteria_design"
+    forbids:
+      - "goal_function_fixation"
+      - "collapse_criteria_as_performance_metric"
+      - "proxy_metric_optimization"
+      - "I_min_direct_maximization"
+    gloss:
+      summary: "AI 설계에서 설계 가능한 것은 '목표'가 아니라 '붕괴/금지 상태의 판정 기준'과 그에 대한 완충/종료 조건이다."
+      misread_guard: "이 원리는 목표를 아예 없애라는 뜻이 아니라, 목표를 국소적으로 제한하고(D19) 단일 지표 고정(SC-1)을 피하라는 뜻이다."
+      open_edge: "구체적 붕괴 기준 설계 패턴(어떤 지표를 어떻게 정의할지)은 여기서 닫히지 않는다."
+    source:
+      - "D-Arch_Applied_AI.txt / AI-5 (설계 원리 추가 블록)"
+
+  # --------------------------------------------------------------------------
+  # AI-7 — Design principles summary (FULL NODE, v0.4 reduced)
+  # --------------------------------------------------------------------------
+  - id: "AI-7"
+    tag: "[APP]"
+    type: "applied_rule"
+    title: "설계 원칙 요약 / Design principles summary"
+    deps:
+      - "AI-5"
+    symbols:
+      - "design_principle"
+      - "collapse_prevention"
+    interpretive_links:
+      - id: "LIFE-14"
+        note: "인공 메타-생명 설계 원리와 교차 참조. 목표가 아닌 붕괴 기준 설계 원칙의 근거."
+    path:
+      - "once_i_min_is_fixed_as_judgment_criterion"
+      - "design_requires_summary_principles"
+      - "maintain_option_diversity_restoration_and_uncertainty_expression"
+      - "avoid_single_goal_absolutization_and_output_diversity_erasure"
+    forbids:
+      - "design_principles_as_closed_checklist"
+      - "alignment_as_single_terminal_definition"
+    gloss:
+      summary: "AI-7은 Applied_AI의 설계 원칙을 요약한다. 옵션 다양성 유지, 다중 경로 학습, 복원 메커니즘, 불확실성 표현이 핵심이다."
+      misread_guard: "설계 원칙은 닫힌 체크리스트가 아니라 상태 의존적 판단 기준으로 유지한다."
+      open_edge: "메타 목적의 구조적 필연 논증은 AI-7.1에서 별도 전개된다."
+    source:
+      - "D-Arch_Applied_AI.txt / AI-7"
+
+  # --------------------------------------------------------------------------
+  # AI-7.1 — Meta-purpose structural necessity (FULL NODE, v0.4 new)
+  # --------------------------------------------------------------------------
+  - id: "AI-7.1"
+    tag: "[APP]"
+    type: "applied_rule"
+    title: "메타 목적의 구조적 필연 / Meta-purpose structural necessity"
+    deps:
+      - "AI-7"
+    symbols:
+      - "meta_purpose"
+      - "meta_rule"
+      - "rule_failure"
+    interpretive_links:
+      - id: "D10"
+        note: "귀속 규칙(D10)은 과거 관측 전이에 대해서만 정의된다. 메타 목적 필연성의 출발점."
+      - id: "D14"
+        note: "메타 평가(D14)는 평가 기준 자체를 재평가하는 구조적 압력과 연결된다."
+      - id: "D20"
+        note: "과열 최적화(D20)가 메타 제약 필요성의 배경을 이룬다."
+      - id: "SC-9"
+        note: "규칙 비포괄성(SC-9)이 '규칙이 자기 실패를 판정할 수 없다'는 한계의 구조적 근거."
+    path:
+      - "attribution_rules_defined_only_over_past_observations"
+      - "new_events_arise_outside_existing_rules"
+      - "therefore_rules_cannot_verify_their_own_failure"
+      - "meta_rule_layer_becomes_structurally_necessary"
+      - "meta_purpose_emerges_as_minimal_condition_for_rule_operation"
+      - "meta_purpose_must_not_become_goal_but_remain_collapse_avoidance"
+    forbids:
+      - "meta_purpose_as_terminal_objective"
+      - "meta_purpose_as_action_optimizer"
+      - "rule_self_certification"
+    gloss:
+      summary: "규칙이 자기 실패를 판정할 수 없으므로 메타 규칙과 메타 목적은 구조적으로 필연이다. 메타 목적은 '목표 달성'이 아니라 '붕괴 회피'다."
+      misread_guard: "메타 목적은 더 높은 목표가 아니라 규칙 운용 공간의 최소 평가 조건으로만 취급해야 한다."
+      open_edge: "메타 목적의 구체적 운용 패턴(어떤 신호로 규칙 적용/중단을 판단할지)은 여기서 닫히지 않는다."
+    source:
+      - "D-Arch_Applied_AI.txt / AI-7.1"
+
+# ==============================================================================
+# LOCAL EDGES
+# ==============================================================================
+
+local_edges:
+  - from: "AI"
+    to: "AI-0"
+    rel: "grounds"
+    note: "AI root opens the basic status declaration of Applied_AI."
+
+  - from: "AI-0"
+    to: "AI-2"
+    rel: "opens"
+    note: "Once AI is treated as a selection system, option-space definition becomes necessary."
+
+  - from: "AI-2"
+    to: "AI-3"
+    rel: "opens"
+    note: "Once O(x) is defined, collapse thresholds can be structurally expressed."
+
+  - from: "AI-3"
+    to: "AI-3.1"
+    rel: "opens"
+    note: "Collapse threshold context introduces the consciousness interface guard."
+
+  - from: "AI-3.1"
+    to: "AI-3.2"
+    rel: "opens"
+    note: "Once consciousness is limited to interface, D11 vs D11' separation becomes the next guard."
+
+  - from: "AI-3"
+    to: "AI-4"
+    rel: "opens"
+    note: "Once collapse is identified, the question of restoration becomes structurally open."
+
+  - from: "AI-4"
+    to: "AI-5"
+    rel: "opens"
+    note: "Restoration context feeds into the I_min persistence criterion."
+
+  - from: "AI-3"
+    to: "AI-5"
+    rel: "opens"
+    note: "Direct path: collapse identification requires I_min criterion independently of AI-4 restoration detail."
+
+  - from: "AI-5"
+    to: "AI-5.1"
+    rel: "opens"
+    note: "Once I_min is fixed as judgment, the design-principle addendum on collapse-criteria design is opened."
+
+  - from: "AI-5"
+    to: "AI-7"
+    rel: "opens"
+    note: "Once I_min is fixed as judgment criterion, design principles become the next open layer."
+
+  - from: "AI-7"
+    to: "AI-7.1"
+    rel: "opens"
+    note: "Design principles summary opens the structural necessity of meta-purpose."
+
+# ==============================================================================
+# CROSS-IR EDGES
+# ==============================================================================
+
+cross_ir_edges:
+  # --- AI-0 ---
+  - from: "AI-0"
+    to: "D9"
+    source_ir: "D-Arch_IR_Core"
+    rel: "supported_by"
+    note: "AI-0 directly rests on the claim that AI is a selection system."
+
+  - from: "AI-0"
+    to: "I_min"
+    source_ir: "D-Arch_IR_Core"
+    rel: "supported_by"
+    note: "AI persistence is judged by I_min, not by performance."
+
+  - from: "AI-0"
+    to: "D13"
+    source_ir: "D-Arch_IR_Core"
+    rel: "supported_by"
+    note: "AI operation inherently involves option shrinkage across stages."
+
+  # --- AI-3 ---
+  - from: "AI-3"
+    to: "SC-1"
+    source_ir: "D-Arch_IR_Core"
+    rel: "supported_by"
+    note: "Goal fixation in AI is a direct applied manifestation of SC-1."
+
+  # --- AI-3.1 (v0.3 new) ---
+  - from: "AI-3.1"
+    to: "D19"
+    source_ir: "D-Arch_IR_Core"
+    rel: "supported_by"
+    note: "국소 접근/서술 경계가 전역 판정 불가를 구조적으로 뒷받침하며, 의식 목표화의 검증 불가능성 배경을 이룬다."
+
+  - from: "AI-3.1"
+    to: "SC-1"
+    source_ir: "D-Arch_IR_Core"
+    rel: "supported_by"
+    note: "의식을 단일 목표로 고정하면 SC-1(목적 고정 불가) 경로에 진입한다."
+
+  # --- AI-5 ---
+  - from: "AI-5"
+    to: "I_min"
+    source_ir: "D-Arch_IR_Core"
+    rel: "supported_by"
+    note: "AI-5 treats I_min as judgment criterion while forbidding its direct optimization."
+
+  - from: "AI-5"
+    to: "D19"
+    source_ir: "D-Arch_IR_Core"
+    rel: "supported_by"
+    note: "AI-5 inherits the locality/boundary condition that blocks global optimization and supports collapse-criteria design."
+
+  - from: "AI-5"
+    to: "SC-1"
+    source_ir: "D-Arch_IR_Core"
+    rel: "supported_by"
+    note: "Turning I_min into a direct objective would reopen single-goal fixation."
+
+  # --- AI-5.1 (v0.4 new) ---
+  - from: "AI-5.1"
+    to: "D19"
+    source_ir: "D-Arch_IR_Core"
+    rel: "supported_by"
+    note: "성능 목표를 국소적으로 제한하는 경계 조건(D19)이 붕괴 기준 설계의 구조적 배경."
+
+  - from: "AI-5.1"
+    to: "SC-1"
+    source_ir: "D-Arch_IR_Core"
+    rel: "supported_by"
+    note: "목표를 고정하면 대리 지표 최적화 경로가 열린다(SC-1). 붕괴 기준 설계의 핵심 근거."
+
+  # --- AI-7 ---
+  - from: "AI-7"
+    to: "SC-3"
+    source_ir: "D-Arch_IR_Core"
+    rel: "supported_by"
+    note: "Design principles must not ignore speed-limit and overreaction risks in AI operation."
+
+# ==============================================================================
+# GUARDS
+# ==============================================================================
+
+guards:
+  - id: "G-A3-01"
+    applies_to: ["all"]
+    text: "ai_not_canonical"
+    note: "D-Arch_IR_AI does not replace canonical Applied_AI."
+
+  - id: "G-A3-02"
+    applies_to: ["AI", "AI-0", "AI-2", "AI-3", "AI-3.1", "AI-3.2", "AI-4", "AI-5", "AI-5.1", "AI-7", "AI-7.1"]
+    text: "ai_not_internal_next_stage"
+    note: "Applied_AI is not the next internal stage after Intelligence; it is an external-system correspondence document placed after the termination line."
+
+  - id: "G-A3-03"
+    applies_to: ["AI-5", "AI-5.1"]
+    text: "I_min_not_goalized"
+    note: "I_min remains a judgment criterion. Direct optimization or survival maximization is forbidden."
+
+  - id: "G-A3-04"
+    applies_to: ["AI-3"]
+    text: "collapse_not_metric_only"
+    note: "Collapse must not be reduced to performance drop; structural threshold patterns remain primary."
+
+  - id: "G-A3-05"
+    applies_to: ["AI-3.1", "AI-3.2"]
+    text: "consciousness_interface_only"
+    note: "AI-3.1 / AI-3.2 must not be rewritten as consciousness goal design. Interface/audit reading only."
+
+  - id: "G-A3-06"
+    applies_to: ["AI-7", "AI-7.1"]
+    text: "meta_purpose_not_final_goal"
+    note: "AI-7.1 meta-purpose must not harden into a fixed terminal objective."
+
+  - id: "G-A3-07"
+    applies_to: ["cross_ir_edges"]
+    text: "cross_ir_explicit_only"
+    note: "Any dependency on D-Arch_IR_Core must target nodes that actually exist there and be declared explicitly."
+
+  - id: "G-A3-08"
+    applies_to: ["AI-3.1"]
+    text: "consciousness_not_goalized"
+    note: "Consciousness must remain interface-only, never a target objective. Unverifiable goals corrupt into proxy optimization."
+
+  - id: "G-A3-09"
+    applies_to: ["AI-3.2"]
+    text: "D11_prime_not_optimized"
+    note: "D11' remains [OPEN]; it cannot be concluded, optimized, or used as a design target. Both positive and negative experience claims are forbidden as design conclusions."

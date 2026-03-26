@@ -1,0 +1,542 @@
+# D-Architecture Layer1 IR — Pilot v0.6
+# Scope: D9, D13, D16, D17, D18, D19, SC-1, SC-3, OC-4, I_min
+# Status: experimental representation (L1-C6)
+# This IR does NOT replace canonical documents.
+
+ir_meta:
+  ir_version: "L1-pilot-v0.6"
+  scope: ["D9", "D13", "D16", "D17", "D18", "D19", "SC-1", "SC-3", "OC-4", "I_min"]
+  layer_policy:
+    representation_only: true
+    canonical_replacement: false
+    closed_definition_forbidden: true
+    source_required: true
+  type_policy:
+    role: "auxiliary_classification"
+    canonical: false
+    values:
+      - "core"
+      - "structural_consequence"
+      - "operational_condition"
+      - "base_condition"
+  forbids_policy:
+    split_status: "planned"
+    split_target_version: "v1.0"
+  review_checks:
+    - core_redefinition_absent
+    - derivation_path_preserved
+    - guardline_present
+    - canonical_replacement_absent
+    - closed_definition_signal_absent
+  changelog:
+    v0.3_to_v0.4:
+      - "D13.symbols: G-L1-05 alignment"
+      - "D16 node added"
+      - "I_min node added as base_condition"
+      - "SC-1.deps: I_min restored (now has its own node)"
+    v0.4_to_v0.5:
+      - "I_min.tag: removed [INVARIANT], tag field left empty (no canonical tag exists in source)"
+      - "external_edges section added: edges referencing out-of-scope nodes moved here"
+      - "D17 node added (stub): minimal for SC-3 deps"
+      - "D18 node added (stub): minimal for SC-3 deps"
+      - "SC-3 node added: Selection Speed Limit"
+      - "New edges: D17->SC-3, D18->SC-3, D16->SC-3, D19->SC-3, SC-3->I_min"
+      - "SC-1<->SC-3 cross-edge added"
+    v0.5_to_v0.6:
+      - "OC-4 node added: Stop/Pause as structural necessities, not failures"
+      - "SC-3.open_edge partially concretized by OC-4"
+      - "New edges: SC-3->OC-4, OC-4->I_min, OC-4->SC-3"
+      - "OC-4 introduced without closing operational detail into fixed procedure"
+      - "New rel types introduced: operationalized_by, stabilizes (provisional, subject to v1.0 rel vocabulary review)"
+      - "forbids: immediate_reaction_as_default removed (source is RG-3.2, not OC-4; mandatory_continuous_selection covers the domain)"
+      - "New guards: G-L1-07 (stop/pause not failure), G-L1-08 (no fixed stop protocol)"
+
+# ==============================================================================
+# NODES
+# ==============================================================================
+
+nodes:
+
+  # --------------------------------------------------------------------------
+  # I_min — Core Base Condition
+  # --------------------------------------------------------------------------
+  - id: "I_min"
+    tag: ""  # No canonical document tag exists; I_min is defined in SC-0 preamble
+    type: "base_condition"
+    title: "최소 불변량 / Minimum Invariant"
+    symbols:
+      - "I_min"
+      - "∃t'>t : O(x_t') ≠ ∅"
+    deps:
+      - "D0"
+      - "D9"
+      - "D13"
+      - "D15"
+    path:
+      - "state_space_is_nonempty"
+      - "selection_irreversibly_shrinks_option_space"
+      - "if_shrinkage_reaches_zero_system_collapses"
+      - "persistence_requires_future_options_remain_nonzero"
+    forbids:
+      - "I_min_as_optimization_target"
+      - "I_min_as_goal_function"
+      - "I_min_as_performance_metric"
+    gloss:
+      summary: "미래 선택 가능성이 완전히 닫히지 않는 조건. 판정 기준이지 최적화 대상이 아니다."
+      misread_guard: "I_min을 극대화하려는 시도는 SC-1(단일 목적 고정)을 위반한다. 유지 여부 판정만 허용된다."
+      open_edge: "I_min의 구체적 측정 방식은 OC-1(근사 측정)에서 다루며, 여기서 닫히지 않는다."
+      source:
+        - "D-Arch_SC_Detail.txt / SC-0"
+        - "D-Arch_Core.txt / Part V"
+        - "d-arch-reference.txt §2"
+
+  # --------------------------------------------------------------------------
+  # D9 — Selection
+  # --------------------------------------------------------------------------
+  - id: "D9"
+    tag: "[NEC]"
+    type: "core"
+    title: "선택 / Selection"
+    symbols:
+      - "x* ∈ arg opt J̃(x)"
+      - "Ω_(t+1) = Ω_t ∩ C_(t+1)"
+      - "Ω_(t+1) ⊊ Ω_t"
+    deps:
+      - "D1"
+      - "D4"
+    interpretive_links:
+      - id: "D7"
+        note: "J̃는 D7(평가)에서 파생되는 투영 판별이나, D9 원문이 D7을 직접 전제로 명시하지 않음"
+    path:
+      - "possible_states_exist"
+      - "projected_discriminant_J_tilde_fixes_some_candidate"
+      - "state_is_partially_fixed"
+      - "remaining_option_space_is_irreversibly_reduced"
+    forbids:
+      - "selection_as_pure_will"
+      - "selection_as_purpose_optimization"
+    gloss:
+      summary: "선택은 가능한 상태들 중 일부를 확정 조건에 따라 고정하는 연산이며, 그 결과 Ω는 비가역적으로 축소된다."
+      misread_guard: "J̃는 목적함수가 아니라 후보를 고정하기 위한 투영된 판별/규준이다. 선택은 의지·의도·목적을 전제하지 않는다."
+      open_edge: "선택 규칙 자체의 완전한 닫힘은 여기서 정의되지 않는다."
+      source:
+        - "D-Arch_Core.txt / D9"
+        - "d-arch-reference.txt §1"
+
+  # --------------------------------------------------------------------------
+  # D13 — Option Shrinkage
+  # --------------------------------------------------------------------------
+  - id: "D13"
+    tag: "[NEC]"
+    type: "core"
+    title: "옵션 공간 축소 / Option Shrinkage"
+    symbols:
+      - "selection"
+      - "|O(x)|↓"
+    deps:
+      - "D9"
+    path:
+      - "selection_occurs"
+      - "some_options_become_unreachable"
+      - "|O(x)| may decrease"
+      - "selection_has_cost_and_irreversibility_pressure"
+    forbids:
+      - "costless_selection"
+      - "selection_without_option_elimination"
+      - "selection_without_irreversible_effect"
+    gloss:
+      summary: "선택은 옵션을 소거하며, 모든 선택은 비용을 가진다."
+      misread_guard: "옵션 축소는 Ω 전체의 소거가 아니라 도달 가능한 미래 O(x)의 축소다."
+      open_edge: "축소량의 전역 계산은 여기서 닫히지 않는다."
+      source:
+        - "D-Arch_Core.txt / D13"
+        - "d-arch-reference.txt §1"
+
+  # --------------------------------------------------------------------------
+  # D16 — Restoration
+  # --------------------------------------------------------------------------
+  - id: "D16"
+    tag: "[NEC]"
+    type: "core"
+    title: "복원 / Restoration"
+    symbols:
+      - "R"
+      - "collapse_risk → option_recovery_attempt"
+    deps:
+      - "D15"
+    interpretive_links:
+      - id: "D17"
+        note: "복원에는 비용이 따르나(D17), D16 원문이 D17을 직접 전제로 명시하지 않음."
+      - id: "D18"
+        note: "복원에는 지연이 따르나(D18), D16 원문이 D18을 직접 전제로 명시하지 않음."
+    path:
+      - "option_space_approaches_Theta"
+      - "collapse_risk_is_detected"
+      - "recovery_action_is_attempted"
+      - "new_options_may_become_reachable"
+    forbids:
+      - "restoration_as_rollback"
+      - "restoration_as_previous_state_recovery"
+      - "guaranteed_restoration_success"
+      - "costless_restoration"
+      - "infinite_restoration_budget"
+    gloss:
+      summary: "복원은 이전 상태를 되돌리는 것이 아니라, 새 옵션이 다시 생길 수 있는 조건을 여는 시도다."
+      misread_guard: "복원은 성공을 보장하지 않으며, 결과 복구가 아닌 선택 가능성 복구다."
+      open_edge: "복원의 구체적 메커니즘은 Applied_Regulation RG-6에서 다루며, 여기서 닫히지 않는다."
+      source:
+        - "D-Arch_Core.txt / D16"
+        - "D-Arch_Applied_Regulation.txt / RG-6"
+        - "d-arch-reference.txt §1"
+
+  # --------------------------------------------------------------------------
+  # D17 — Cost (stub: minimal for SC-3 dependency)
+  # --------------------------------------------------------------------------
+  - id: "D17"
+    tag: "[NEC]"
+    type: "core"
+    title: "비용 / Cost"
+    symbols:
+      - "C(a) > 0"
+    deps: []
+    path:
+      - "all_actions_have_nonzero_cost"
+      - "infinite_action_is_structurally_impossible"
+    forbids:
+      - "costless_action"
+      - "infinite_budget"
+    gloss:
+      summary: "모든 행동에는 비용이 따른다. 비용이 없으면 무한 행동이 가능하고, 이는 구조적으로 불가하다."
+      misread_guard: "비용은 제약이지 벌칙이 아니다. 비용 최소화를 목표로 삼으면 SC-1 경로에 진입한다."
+      open_edge: "비용의 구체적 회계는 OC-3에서 다루며, 여기서 닫히지 않는다."
+      source:
+        - "D-Arch_Core.txt / D17"
+        - "d-arch-reference.txt §1"
+
+  # --------------------------------------------------------------------------
+  # D18 — Delay (stub: minimal for SC-3 dependency)
+  # --------------------------------------------------------------------------
+  - id: "D18"
+    tag: "[NEC]"
+    type: "core"
+    title: "지연 / Delay"
+    symbols:
+      - "t(effect) > t(cause)"
+    deps: []
+    path:
+      - "cause_and_effect_have_time_gap"
+      - "instant_causation_requires_infinite_speed"
+      - "infinite_speed_is_structurally_impossible"
+    forbids:
+      - "instant_causation"
+      - "zero_delay_action"
+    gloss:
+      summary: "원인과 결과 사이에는 시간 간격이 있다. 즉각적 인과는 구조적으로 불가하다."
+      misread_guard: "지연은 비효율이 아니라 인과의 구조적 조건이다."
+      open_edge: "지연의 구체적 비용 증가 패턴은 OC-3에서 다루며, 여기서 닫히지 않는다."
+      source:
+        - "D-Arch_Core.txt / D18"
+        - "d-arch-reference.txt §1"
+
+  # --------------------------------------------------------------------------
+  # D19 — Closure Boundary
+  # --------------------------------------------------------------------------
+  - id: "D19"
+    tag: "[NEC]"
+    type: "core"
+    title: "폐쇄 경계 / Closure Boundary"
+    symbols:
+      - "Ω_local ⊂ Ω"
+      - "∂Ω_local ≠ ∅"
+    deps:
+      - "D5"
+      - "D8"
+    path:
+      - "full_state_space_is_not_globally_accessible"
+      - "only_local_state_space_is_accessible"
+      - "judgment_and_observation_are_local"
+      - "global_fixation_or_global_optimization_is_blocked"
+    forbids:
+      - "global_info_access"
+      - "global_judgment"
+      - "global_state_as_operational_basis"
+    gloss:
+      summary: "어떤 시스템도 전체 Ω에 접근할 수 없고, 오직 Ω_local만 다룰 수 있다."
+      misread_guard: "전역이 존재하지 않는다는 뜻이 아니라, 전역 접근이 구조적으로 불가하다는 뜻이다."
+      open_edge: "국소 경계의 구체 구현은 후속 레이어에서만 제한적으로 표현된다."
+      source:
+        - "D-Arch_Core.txt / D19"
+        - "d-arch-reference.txt §1"
+
+  # --------------------------------------------------------------------------
+  # SC-1 — Impossibility of Persistent Goal Fixation
+  # --------------------------------------------------------------------------
+  - id: "SC-1"
+    tag: "[SC]"
+    type: "structural_consequence"
+    title: "단일 목적 고정의 불가능성 / Impossibility of Persistent Goal Fixation"
+    symbols:
+      - "goal_fixation"
+      - "|O(x)|↓"
+      - "Theta_approach"
+      - "I_min_erosion"
+    deps:
+      - "D9"
+      - "D13"
+      - "D16"
+      - "D19"
+      - "I_min"
+    path:
+      - "goal_is_persistently_fixed"
+      - "nonconforming_paths_are_repeatedly_removed"
+      - "option_space_becomes_biased_and_shrinks"
+      - "restoration_requires_out_of_goal_paths"
+      - "restoration_possibility_is_structurally_limited"
+      - "system_approaches_Theta"
+      - "I_min_is_eroded"
+    forbids:
+      - "persistent_single_goal"
+      - "goal_fixation_as_stability_strategy"
+      - "optimize_I_min_as_goal"
+    gloss:
+      summary: "선택 시스템은 단일 결과 목적을 장기적으로 고정할 수 없다."
+      misread_guard: "목적 일반이 금지되는 것이 아니라, 장기적 고정이 옵션 공간을 닫는 경로가 금지된다."
+      open_edge: "목적은 임시적이거나 상위 제약 하에서만 허용되며, 이 허용 범위는 상태 의존적으로 남겨둔다."
+      source:
+        - "D-Arch_SC_Detail.txt / SC-1"
+        - "d-arch-reference.txt §4"
+
+  # --------------------------------------------------------------------------
+  # SC-3 — Selection Speed Limit
+  # --------------------------------------------------------------------------
+  - id: "SC-3"
+    tag: "[SC]"
+    type: "structural_consequence"
+    title: "선택 속도의 상한 / Existence of a Selection Speed Limit"
+    symbols:
+      - "v (selection_rate)"
+      - "v*  (speed_limit)"
+      - "α(v) (elimination_rate)"
+      - "β(v) (restoration_efficiency)"
+    deps:
+      - "D17"
+      - "D18"
+      - "D19"
+      - "D13"
+      - "D16"
+      - "I_min"
+    path:
+      - "selection_speed_increases"
+      - "option_elimination_rate_alpha_increases"
+      - "restoration_efficiency_beta_is_bounded_by_cost_and_delay"
+      - "when_v_exceeds_v_star_alpha_exceeds_beta"
+      - "|O(x)|_decreases_persistently"
+      - "judgment_is_not_omniscient_so_Theta_detection_is_delayed"
+      - "late_restoration_is_more_expensive_and_less_effective"
+      - "I_min_is_eroded"
+    forbids:
+      - "unlimited_selection_speed"
+      - "speed_as_performance_metric"
+      - "stop_or_pause_as_failure"
+    gloss:
+      summary: "선택에는 구조적 속도 제한이 존재한다. 소거 속도가 복원 효율을 초과하면 붕괴 경로에 진입한다."
+      misread_guard: "멈춤/관찰/유예는 실패가 아니라 구조적 필연이다. 속도 상한을 제거하려는 시도는 I_min을 침식한다."
+      open_edge: "정지/유예의 구체적 운용 조건은 OC-4에서 다루며, 여기서 닫히지 않는다."
+      source:
+        - "D-Arch_SC_Detail.txt / SC-3"
+        - "D-Arch_OC_Detail.txt / OC-4"
+        - "d-arch-reference.txt §4"
+
+  # --------------------------------------------------------------------------
+  # OC-4 — Temporal Necessity: Stop / Pause
+  # --------------------------------------------------------------------------
+  - id: "OC-4"
+    tag: "[OC]"
+    type: "operational_condition"
+    title: "시간 필연: 정지·유예의 구조적 규칙 / Temporal Necessity of Stop and Pause"
+    symbols:
+      - "v (selection_rate)"
+      - "v_max"
+      - "Stop"
+      - "Pause"
+    deps:
+      - "SC-3"
+    interpretive_links:
+      - id: "D21"
+        note: "유예는 시간적 완충 장치로 읽을 수 있으나, OC-4 원문은 D21을 직접 deps로 고정하지 않는다."
+      - id: "D19"
+        note: "국소 판정 한계가 과속 선택의 위험을 키우지만, OC-4 원문은 이를 SC-3 배경으로 처리한다."
+    path:
+      - "time_enables_selection_but_also_erases_options"
+      - "if_selection_rate_exceeds_v_max_option_space_shrinks"
+      - "judgment_cannot_keep_up_with_approximation_error"
+      - "Theta_approach_signal_detection_is_delayed"
+      - "restoration_timing_is_lost"
+      - "therefore_stop_or_pause_becomes_structurally_necessary"
+      - "stop_explicitly_suspends_selection_for_observation_and_reordering"
+      - "pause_preserves_state_while_waiting_for_external_event_or_internal_reordering"
+      - "option_erosion_is_temporally_buffered"
+    forbids:
+      - "stop_as_failure"
+      - "pause_as_failure"
+      - "mandatory_continuous_selection"
+    gloss:
+      summary: "정지와 유예는 선택 실패가 아니라, 선택 지속을 가능하게 하기 위한 구조적 조건이다."
+      misread_guard: "멈춤은 포기나 마비가 아니고, 유예는 결정 회피가 아니라 시간적 완충이다."
+      open_edge: "정지/유예의 구체적 트리거와 해제 조건은 고정 프로토콜로 닫지 않으며, 상태 의존적으로 남겨둔다."
+      source:
+        - "D-Arch_OC_Detail.txt / OC-4"
+        - "d-arch-reference.txt §5"
+
+# ==============================================================================
+# EDGES (between in-scope nodes)
+# ==============================================================================
+
+edges:
+  # Core chain
+  - from: "D9"
+    to: "D13"
+    rel: "generates"
+    note: "선택은 옵션 축소 압력을 발생시킨다."
+
+  # SC-1 support edges
+  - from: "D19"
+    to: "SC-1"
+    rel: "supports"
+    note: "전역 판정 불가 → 단일 목적 고정은 장기 안정 기준이 될 수 없다."
+
+  - from: "D13"
+    to: "SC-1"
+    rel: "supports"
+    note: "선택이 옵션을 줄이므로, 목적 고정은 옵션 편향 축소를 가속한다."
+
+  - from: "D16"
+    to: "SC-1"
+    rel: "supports"
+    note: "복원은 목적 외 경로를 요구하므로, 목적 고정은 복원 가능성을 구조적으로 제한한다."
+
+  - from: "I_min"
+    to: "SC-1"
+    rel: "grounds"
+    note: "SC-1의 귀결은 I_min 침식이다. I_min이 SC-1 판정의 최종 기준."
+
+  - from: "SC-1"
+    to: "I_min"
+    rel: "threatens"
+    note: "지속적 목적 고정은 I_min 침식 경로를 연다."
+
+  # SC-3 support edges
+  - from: "D17"
+    to: "SC-3"
+    rel: "supports"
+    note: "모든 행동에 비용 → 복원 효율 β(v)에 상한이 존재."
+
+  - from: "D18"
+    to: "SC-3"
+    rel: "supports"
+    note: "인과 지연 → 늦은 복원은 더 비싸고 덜 효과적."
+
+  - from: "D19"
+    to: "SC-3"
+    rel: "supports"
+    note: "국소 판정 → 임계 접근 감지 지연 → 과속 시 대응 불가."
+
+  - from: "D13"
+    to: "SC-3"
+    rel: "supports"
+    note: "선택이 옵션을 줄이므로, 과속 선택은 축소를 가속한다."
+
+  - from: "D16"
+    to: "SC-3"
+    rel: "supports"
+    note: "복원 효율이 소거 속도를 따라잡지 못하면 붕괴 경로 진입."
+
+  - from: "SC-3"
+    to: "I_min"
+    rel: "threatens"
+    note: "속도 상한을 초과하면 I_min 침식 경로가 열린다."
+
+  # SC-1 <-> SC-3 cross-connection
+  - from: "SC-1"
+    to: "SC-3"
+    rel: "reinforces"
+    note: "목적 고정(SC-1)은 과속 선택 압력을 생성하여 SC-3 경로를 가속할 수 있다."
+
+  - from: "SC-3"
+    to: "SC-1"
+    rel: "reinforces"
+    note: "과속 선택(SC-3)은 복원 기회를 잃게 하여 목적 고정 탈출을 어렵게 한다."
+
+  # OC-4 edges
+  - from: "SC-3"
+    to: "OC-4"
+    rel: "operationalized_by"
+    note: "SC-3의 속도 상한 귀결이 운용 수준에서 정지/유예 상태로 구체화된다."
+    rel_status: "provisional"
+
+  - from: "OC-4"
+    to: "SC-3"
+    rel: "stabilizes"
+    note: "정지/유예는 과속 선택을 감속시켜 SC-3 붕괴 경로를 완충한다."
+    rel_status: "provisional"
+
+  - from: "OC-4"
+    to: "I_min"
+    rel: "supports"
+    note: "정지/유예는 옵션 공간의 단조 축소를 늦춰 I_min 유지에 기여한다."
+
+# ==============================================================================
+# EXTERNAL EDGES (referencing out-of-scope nodes)
+# ==============================================================================
+
+external_edges:
+  - from: "D15"
+    to: "D16"
+    rel: "triggers"
+    note: "옵션 공간이 Θ에 접근하면 복원 시도가 발생한다. D15는 이 IR 범위 밖."
+    scope_note: "D15 is not a node in this IR. This edge documents the dependency for completeness."
+
+# ==============================================================================
+# GUARDS
+# ==============================================================================
+
+guards:
+  - id: "G-L1-01"
+    applies_to: ["SC-1", "SC-3"]
+    text: "single_arrow_implication_forbidden"
+    note: "SC 항목은 단일 화살표가 아니라 다단계 path로만 표현한다."
+
+  - id: "G-L1-02"
+    applies_to: ["all"]
+    text: "noncanonical_representation"
+    note: "이 IR은 기준 문서를 대체하지 않는다."
+
+  - id: "G-L1-03"
+    applies_to: ["all"]
+    text: "closed_definition_forbidden"
+    note: "각 항목은 완결 정의가 아니라 구조 포인터로만 유지한다."
+
+  - id: "G-L1-04"
+    applies_to: ["all"]
+    text: "interpretive_link_boundary"
+    note: "interpretive_links는 원문 직접 전제가 아닌 해석적 연결이며, deps와 동등 지위가 아니다."
+
+  - id: "G-L1-05"
+    applies_to: ["all"]
+    text: "symbols_no_implication_chain"
+    note: "symbols 필드는 핵심 기호/용어만 나열한다. 함축 체인은 path에서만 표현한다."
+
+  - id: "G-L1-06"
+    applies_to: ["I_min"]
+    text: "I_min_non_optimization_guard"
+    note: "I_min은 판정 기준이다. 최적화 대상/목표함수/성능 지표로 사용하는 것은 SC-1 위반이다."
+
+  - id: "G-L1-07"
+    applies_to: ["OC-4"]
+    text: "stop_pause_not_failure"
+    note: "정지와 유예를 실패·중단·무능으로 읽지 않는다. OC-4에서 이들은 구조적 필연 상태다."
+
+  - id: "G-L1-08"
+    applies_to: ["OC-4"]
+    text: "no_fixed_stop_protocol"
+    note: "정지/유예를 단일 임계값이나 고정 절차로 닫지 않는다. 구체 운용 조건은 상태 의존적으로 남겨둔다."

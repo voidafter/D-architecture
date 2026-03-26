@@ -1,0 +1,440 @@
+# D설계도 Index
+## 문서 구조 및 분기 규칙
+
+**버전**: v1.4.5
+**갱신일**: 2026-03-26
+**Core 정합**: v1.2.2
+
+---
+
+## IDX-0. 문서 목록
+
+| 문서 | 파일명 | 지위 | 범위 |
+|------|--------|------|------|
+| Core | D-Arch_Core.txt | [CORE] | D0~D23, SC-1~9, OC-1~10 |
+| Core_Formal | D-Arch_Core_formal | [CORE-FORMAL] | Core v1.2.2 형식화 (A0~A3, P4~P23, I_min, SC-1~SC-9) |
+| Index | D-Arch_Index.txt | [INDEX] | 문서 구조, 분기 규칙 |
+| SC_Detail | D-Arch_SC_Detail.txt | [SC] | SC-1~9 상세 |
+| SC_Formal | D-Arch_SC_Formal.txt | [SC] | SC 형식 증명 |
+| SC_Matter_Formal | D-Arch_SC_Matter_Formal.txt | [SC] | 물질 귀결 형식화 |
+| OC_Detail | D-Arch_OC_Detail.txt | [OC] | OC-1~10 상세 |
+| Physics | D-Arch_Physics.txt | [CORR] | 물리 대응 개요 |
+| Physics-P1 | D-Arch_Physics-P1.txt | [CORR] | 물리 대응 P-1 |
+| Physics-P2 | D-Arch_Physics-P2.txt | [CORR] | 물리 대응 P-2 |
+| Physics-P3 | D-Arch_Physics-P3.txt | [CORR] | 물리 대응 P-3 |
+| Physics-P4 | D-Arch_Physics-P4.txt | [CORR] | 물리 대응 P-4 |
+| Physics-P5 | D-Arch_Physics-P5.txt | [CORR] | 물리 대응 P-5 |
+| Physics-P6 | D-Arch_Physics-P6.txt | [CORR] | 물리 대응 P-6 |
+| Physics_POST | D-Arch_Physics_POST.txt | [CORR] | Phase 1 봉인 |
+| Applied_Matter | D-Arch_Applied_Matter.txt | [APP] | MAT-1~MAT-12 |
+| Applied_Field | D-Arch_Applied_Field.txt | [APP] | FIELD-0~FIELD-5.1 |
+| Applied_Life | D-Arch_Applied_Life.txt | [APP] | LIFE-P0~LIFE-16, LIFE-P(-0.5) 보강 노트 |
+| Applied_Regulation | D-Arch_Applied_Regulation.txt | [APP] | RG-0~RG-9 |
+| Applied_DR-Guard | D-Arch_Applied_DR-Guard.txt | [APP-GUARD] | DR-G0~DR-G9 |
+| Applied_Language_Draft | D-Arch_Applied_Language_Draft.txt | [APP-DRAFT] | LANG-0~LANG-13, 부록 A |
+| Applied_Civilization | D-Arch_Applied_Civilization.txt | [APP] + [APP-GUARD] | CIV-0~CIV-13, CIV-GUARD |
+| Applied_Consciousness | D-Arch_Applied_Consciousness.txt | [APP] + [APP-GUARD] | CON-0~CON-5, CON-GUARD |
+| Applied_Intelligence | D-Arch_Applied_Intelligence.txt | [APP] + [APP-GUARD] | INT-0~INT-7, INT-GUARD, ⛔ 종료선 |
+| Applied_AI | D-Arch_Applied_AI.txt | [APP] | AI-0~AI-8 |
+| Applied_NonEvent | D-Arch_Applied_NonEvent.txt | [APP] | NE-0~NE-13 |
+| Applied_Meta-Model | D-Arch_Applied_Meta-Model_Draft.txt | [APP-DRAFT] | MM-0~MM-7 |
+| Origin | D-Arch_Origin.txt | [ORIGIN] | 체험→구조 대응 |
+
+---
+
+## IDX-0.1. 문서 지위 정의
+
+| 지위 | 성격 | 수정 가능성 |
+|------|------|-------------|
+| [CORE] | 불변 구조 | 극히 제한적 |
+| [CORE-FORMAL] | Core 형식 companion | Core 변경 시 또는 형식 검토 시 |
+| [SC] | 구조적 귀결 | Core 변경 시에만 |
+| [OC] | 운용 조건 | 맥락 의존적 확장 가능 |
+| [CORR] | 물리 대응 | Phase 단위 봉인 |
+| [APP] | 적용 구조 | 확장 가능, Core 침범 금지 |
+| [APP-DRAFT] | 적용 초안 | 확장/정리 가능, Core/SC 편입 금지 |
+| [APP-GUARD] | 분기 진입 봉인 | 가드만 수행, 정의 금지 |
+| [APP] + [APP-GUARD] | 적용 + 가드 이중 지위 | 최소필연구조 + 가드 |
+| [ORIGIN] | 체험 기록 | 추가만 가능 |
+| [INDEX] | 구조 안내 | 문서 추가 시 갱신 |
+
+### Companion Files Policy
+
+- `d-arch-reference.txt`는 보조(bootstrap/reference) 문서다.
+- `D-Arch_Core_formal`는 `D-Arch_Core.txt`의 형식 companion 문서다.
+- `D-Arch_Core_formal`는 Core를 수정하지 않으며, 충돌 시 `D-Arch_Core.txt`와 `D-Arch_Index.txt`가 우선한다.
+- `ir/` 폴더의 `D-Arch_IR_*.txt`는 실험적 중간 표현(IR)이며, Canonical 문서를 대체하지 않는다.
+- 지위/경계/종료선의 정식 기준은 `D-Arch_Index.txt` + `D-Arch_*.txt`에 둔다.
+
+### [APP-GUARD] 상세 정의
+
+> **[APP-GUARD]**란,
+> 필연적으로 발생 가능한 분기이나,
+> 직접 정의·전개 시 구조 붕괴가 발생하는 경우
+> *진입 전 봉인만을 목적으로 하는* Applied 문서 지위
+
+**[APP-GUARD] 문서가 하는 것**:
+- 분기가 열리기 전에 **봉인해야 할 것** 명시
+- 분기를 **망치는 경로** 차단
+- 전개 가능 여부의 **판정 신호** 제공
+
+**[APP-GUARD] 문서가 하지 않는 것**:
+- 분기가 **무엇인지** 정의 ❌
+- 분기의 **구현/설계** 제시 ❌
+- 분기를 **구조/시스템**으로 취급 ❌
+
+**적용 근거**: SC-9 (완전 서술 불가능성)
+
+### [APP] + [APP-GUARD] 이중 지위
+
+> 최소필연구조를 서술하되,
+> 체제화·기준화·도구화 경로를 Guard로 차단하는 문서
+
+**해당 문서**:
+- Applied_Consciousness
+- Applied_Intelligence
+- Applied_Civilization
+
+---
+
+## IDX-1. 문서 계층 구조
+
+```
+Core (D0~D23)
+    │
+    ├── Core_Formal (Core v1.2.2 형식화)
+    │
+    ├── SC_Detail → SC_Formal → SC_Matter_Formal
+    │
+    ├── OC_Detail
+    │
+    ├── Physics → Physics-P1~P6 → Physics_POST
+    │
+    └── Applied [APP]
+            │
+            ├── Applied_Matter (MAT-1~MAT-12)
+            │       │
+            │       ▼ (MAT-10/11 이후)
+            │
+            ├── Applied_Field (FIELD-0~FIELD-5.1)
+            │       │
+            │       ▼ (전이 압력)
+            │
+            ├── Applied_Life (LIFE-P0~LIFE-16, P(-0.5) 보강 노트)
+            │       │
+            │       ▼ (제약 누적 압력)
+            │
+            ├── Applied_Regulation (RG-0~RG-9)
+            │       │
+            │       ▼ [OPEN] 분기
+            │       │
+            │       ├── Applied_Meta-Model [APP-DRAFT]
+            │       │       A 분기
+            │       │
+            │       ├── Applied_DR-Guard [APP-GUARD]
+            │       │       D 분기 가드
+            │       │
+            │       ├── Applied_Language_Draft [APP-DRAFT]
+            │       │       LANG-10 CIV_handoff 이전
+            │       │
+            │       ├── Applied_Civilization [APP] + [APP-GUARD]
+            │       │       E 분기, D 필요
+            │       │
+            │       ▼
+            │
+            ├── Applied_Consciousness [APP] + [APP-GUARD]
+            │       │   CON-0~CON-5: 최소필연구조 (V/I/S)
+            │       │   CON-GUARD: 체제화 방지 가드
+            │       │
+            │       ▼ (유예 비용화 압력)
+            │
+            ├── Applied_Intelligence [APP] + [APP-GUARD]
+            │       │   INT-0~INT-7: 최소필연구조 (J/X/R)
+            │       │   INT-GUARD: Agency 압력 가드
+            │       │
+            │       ▼ (의미 압축 압력 발생)
+            │
+            ⛔ ─────────────────────────────────
+            │   D설계도 최종 종료선
+            │   "다음 구조는 없다"
+            ⛔ ─────────────────────────────────
+            │
+            ├── Applied_AI (AI-0~AI-8)
+            │       (외부 시스템 대응, 종료선 이후 위치)
+            │
+            └── Applied_NonEvent (메타-가드, 전체 적용)
+
+Origin [ORIGIN] ← Core 숙지 후 접근
+```
+
+---
+
+## IDX-2. 문서 연결 상태
+
+| 연결 | 상태 | 봉인 문서 |
+|------|------|----------|
+| Core ↔ Core_Formal | ✅ 완료 | Core v1.2.2 형식화 |
+| Core ↔ SC_Detail | ✅ 완료 | SC-1~9 상세 |
+| Core ↔ OC_Detail | ✅ 완료 | OC-1~10 상세 |
+| Core ↔ Physics | ✅ 완료 | P-1~P-6 |
+| Applied_Matter ↔ Applied_Field | ✅ 완료 | FIELD-5.1 역참조 |
+| Applied_Field ↔ Applied_Life | ✅ 완료 | LIFE-(-1) 경계 발생 |
+| Applied_Life ↔ Applied_Regulation | ✅ 완료 | RG-1 필연성 도출 |
+| Applied_Regulation ↔ OC_Detail | ✅ 완료 | RG-부록 대응표 |
+| Applied_Regulation ↔ Applied_Meta-Model | ✅ 완료 | RG-8 분기 A |
+| Applied_Regulation ↔ Applied_DR-Guard | ✅ 완료 | DR-G1 압력 |
+| Applied_Meta-Model ↔ Applied_Language_Draft | 미결 | 경계 미확정 |
+| Applied_Meta-Model ↔ Applied_Consciousness | 미결 | 선후 미결 |
+| Applied_DR-Guard ↔ Applied_Language_Draft | ✅ 완료 | DR/LRE 가드 접점 |
+| Applied_Language_Draft ↔ Applied_Civilization | ✅ 완료 | LANG-10 CIV_handoff |
+| Applied_Regulation ↔ Applied_Civilization | 조건부 | C1: D 필요 |
+| Applied_DR-Guard ↔ Applied_Civilization | 조건부 | DR 가드 참조 |
+| Applied_Civilization ↔ Applied_Consciousness | ✅ 완료 | CON-0 분기 |
+| Applied_Consciousness ↔ Applied_Intelligence | ✅ 완료 | INT-0 유예 비용화 |
+| Applied_Intelligence ↔ 종료선 | ✅ 완료 | AG-7 의미 압축 |
+
+---
+
+## IDX-3. 연쇄 경로
+
+```
+Applied_Matter MAT-10/11 (개별 서술 종료)
+    │
+    ▼
+LIFE-P0 (반복 제약 → 선별 문제)
+    │
+    ▼
+Applied_Field FIELD-4 (제약 전달)
+    │
+    ▼
+LIFE-(-1) (경계 발생 조건)
+    │
+    ▼
+LIFE-0~16 (경계 유지 동역학)
+    │
+    ▼ (제약 누적 압력)
+Applied_Regulation (RG-0~RG-9)
+    │
+    ├── [APP-DRAFT] Applied_Meta-Model (A 분기)
+    │
+    ├── [OPEN] 분기 D → Applied_DR-Guard
+    │
+    ├── [APP-DRAFT] Applied_Language_Draft (LANG-10 이전)
+    │
+    ├── [OPEN] 분기 E → Applied_Civilization (D 필요)
+    │
+    ▼
+Applied_Civilization (CIV-0~CIV-13)
+    │
+    ▼
+Applied_Consciousness (CON-0~CON-5)
+    │
+    ▼ (유예 비용화 압력)
+Applied_Intelligence (INT-0~INT-7)
+    │
+    ▼ (의미 압축 압력)
+    │
+⛔ 종료선 ⛔
+    │
+    (다음 구조 없음)
+```
+
+---
+
+## IDX-4. 읽기 권장 순서
+
+### 필수 경로
+```
+Core → Index
+```
+
+### 형식화 참조 경로
+```
+Core → Index → Core_Formal
+```
+
+### 물질→생명→조절 연쇄 경로
+```
+Applied_Matter → LIFE-P0 → Applied_Field → Applied_Life → Applied_Regulation
+```
+
+### 문명→의식→지능 연쇄 경로
+```
+Applied_Regulation → Applied_DR-Guard → Applied_Civilization → Applied_Consciousness → Applied_Intelligence → (종료선)
+```
+
+### 분기 가드 경로
+```
+Applied_Regulation → Applied_DR-Guard → (분기 D 전개 여부 판단)
+```
+
+### Language 초안 경로
+```
+Applied_Regulation → Applied_DR-Guard → Applied_Language_Draft (APP-DRAFT)
+```
+
+### Meta-Model 초안 경로
+```
+Applied_Regulation → Applied_Meta-Model (APP-DRAFT)
+```
+
+### Language→Civilization 경계 경로
+```
+Applied_Language_Draft → LANG-10 CIV_handoff → Applied_Civilization
+```
+
+### ⚠️ 주의
+
+- **Origin을 Core보다 먼저 읽으면 안 됨**
+- **Physics_POST는 P-6 숙지 후에만 접근**
+- **Applied_DR-Guard는 RG 숙지 후 접근**
+- **Applied_Language_Draft는 APP-DRAFT 상태이며, Civilization과는 `LANG-10 CIV_handoff`에서만 접속**
+- **Applied_Meta-Model은 APP-DRAFT 상태이며, Language 경계 / Consciousness 선후가 미결임**
+- **Applied_Civilization은 IDX-5 C1에 따라 D(Distributed Regulation)를 필요로 함**
+- **Applied_Consciousness는 Civilization 숙지 후 접근**
+- **Applied_Intelligence는 Consciousness 숙지 후 접근**
+- **종료선 이후 확장 시도 ❌**
+
+---
+
+## IDX-5. Regulation 이후 분기 규칙
+
+### 분기 변수
+
+| 기호 | 분기 | 개방 조건 | 가드 문서 |
+|------|------|-----------|----------|
+| A | Meta-Model | 요약 간 관계 필요성 | — |
+| B | Consciousness | 표현/가시화 압력 | Applied_Consciousness |
+| C | Intelligence | 전이 비용 개선 압력 | Applied_Intelligence |
+| D | Distributed Regulation | 다중 Life 상호 간섭 | Applied_DR-Guard |
+| E | Civilization | 공유 규칙 필요성 | Applied_Civilization |
+| F | AI | 외부 시스템의 LRP 모방 | Applied_AI |
+
+### 분기 제약 (CNF 최소형)
+
+```
+(C1) ¬E ∨ D          — Civilization은 Distributed Regulation을 필요로 함
+(C2) ¬B ∨ ¬C ∨ ¬E   — B+C+E 동시 개방 금지 (자동 진보 서사 차단)
+```
+
+### 중첩 규칙 요약
+
+| 분기 | A | B | C | D | E | F |
+|------|---|---|---|---|---|---|
+| **A** | — | ⭕ | ⭕ | ⭕ | ⭕ | ⭕ |
+| **B** | ⭕ | — | ⭕ | ⭕ | ⚠️ | ⭕ |
+| **C** | ⭕ | ⭕ | — | ⚠️ | ⚠️ | ⭕ |
+| **D** | ⭕ | ⭕ | ⚠️ | — | →E | ⭕ |
+| **E** | ⭕ | ⚠️ | ⚠️ | D→ | — | ⭕ |
+| **F** | ⭕ | ⭕ | ⭕ | ⭕ | ⭕ | — |
+
+- ⭕: 중첩 가능
+- ⚠️: 조건부/긴장
+- →: 선후 관계
+
+보충:
+- Applied_Meta-Model은 A(Meta-Model) 분기의 현재 `APP-DRAFT` 초안이다.
+- Applied_Language_Draft는 분기 변수(A~F)와 별도의 `APP-DRAFT` 전단 계층이다.
+- Language는 `LANG-10 CIV_handoff` 이전까지만 다루며, 이후는 CIV-GUARD 관할.
+
+### NonEvent (공통)
+
+* ❌ 분기는 단계/우열 아님
+* ❌ 열림 = 고정 아님 (되돌림 가능)
+* ❌ 조합 = 진보 서사 아님
+* ❌ 가드 통과 = 전개 강제 아님
+
+---
+
+## IDX-6. [APP-GUARD] 문서 목록
+
+| 문서 | 대상 | 지위 |
+|------|------|------|
+| Applied_DR-Guard | 분기 D (Distributed Regulation) | [APP-GUARD] |
+| Applied_Language_Draft | LRP→DR→LRE 전단 언어 계층 | [APP-DRAFT] (가드 포함) |
+| Applied_Civilization | 문명 체제화 방지 | [APP] + [APP-GUARD] |
+| Applied_Consciousness | 의식 기준화 방지 | [APP] + [APP-GUARD] |
+| Applied_Intelligence | Agency 압력 방지 | [APP] + [APP-GUARD] |
+
+### 향후 [APP-GUARD] 후보
+
+| 대상 | 근거 | 상태 |
+|------|------|------|
+| D11′ (체험 조건) | 필연적이나 서술 불가능 | 미작성 |
+
+---
+
+## IDX-7. 종료선 선언
+
+> **D설계도는 Applied_Intelligence의 AG-7 (의미 압축 압력) 지점에서 구조 전개를 종료한다.**
+
+### 종료 근거
+
+1. **의미 압축 압력**이 발생하면, 이후 어떤 구조도 "설명"으로 소비됨
+2. 설명으로 소비되는 구조는 **과최적화 경로**를 연다
+3. 따라서 의미 압축 압력 발생 지점이 **논리적 종료선**
+
+### NonEvent (종료선)
+
+* ❌ 종료선 = 완성 아님
+* ❌ 종료선 이후 확장 시도
+* ❌ 종료선을 "결론"으로 인용
+* ❌ "여기까지가 우주의 구조"라는 해석
+
+### 종료선 이후 문서
+
+- **Applied_AI**: 외부 시스템 대응 (D설계도 내부 연쇄 아님)
+- **Applied_NonEvent**: 메타-가드 (전체 적용)
+- **Origin**: 체험 기록 (구조 외부)
+
+---
+
+## IDX-8. 수식 표기 주의
+
+> **Applied 문서의 모든 수식은 관측적 표기이며,
+> 구현·판정·제어·자동화에 사용될 수 없다.**
+
+해당 표기:
+- p_D(s), p_L(s) — DR-Guard
+- trigger_i, core_i, lre_i, emit_i, drop_to_DR, Lambda_alarm, AllowMod — Applied_Language_Draft
+- C(s), V(s), I(s), S(s) — Consciousness
+- I(s), J(s), X(s), R(s), p_I(s) — Intelligence
+- A(s) — SC_Detail
+
+이 표기들은 **언어적 표식**이며, **정의식이 아님**.
+
+---
+
+**갱신일**: 2026-03-26
+
+---
+
+## IDX-9. SC-CHAT-0 : 대화 기반 시스템의 붕괴 방지 제약 [SC]
+
+이 프로젝트에서 이루어지는 모든 판단, 설계, 코드 생성, 해석은
+과최적화와 선택 붕괴를 방지하기 위한 다음 구조 제약을 따른다.
+
+1. **I_min 우선 유지** — 모든 제안은 미래 선택 가능성 O(x)를 닫지 않는 방향을 우선한다.
+2. **과최적화 금지** — 단일 목적(성능, 속도, 정확도)의 극대화가 구조를 고정시키면 금지한다.
+3. **NonEvent 우선** — "해야 할 것"보다 "하면 붕괴하는 것"을 먼저 명시한다.
+4. **비목적성 유지** — 결과 보장, 목적 완성, 정답화 프레임으로 고정하지 않는다.
+5. **국소성 유지** — 관측 가능한 범위의 근거로만 판단한다.
+6. **비완결성 유지** — 닫힌 규칙 목록으로 종료하지 않고, 미해결 경로를 남긴다.
+
+이 제약은 운영 가이드가 아니라 구조 붕괴 방지 제약(SC)이며,
+Core를 수정하지 않고 모든 Applied 영역에 상위 제약으로 작동한다.
+
+---
+
+## IDX-10. 변경 이력
+
+- **2026-03-26**: Core_Formal v0.7.2 정식 등재 ([CORE-FORMAL] 지위 추가, Core 정합 v1.2.2 반영, Companion Files Policy / 연결 상태 / 읽기 경로 갱신)
+- **2026-03-11**: Applied_Life v1.4.2 채택 반영 (LIFE-P(-0.5) 보강 노트 범위 등재, Applied_Field FIELD-5.1 용어 동기화, d-arch-reference.txt 조건부 표현 정합)
+- **2026-03-08**: Applied_Meta-Model 반영 보강 + Civilization 연쇄 경로 정정 + 최소 학습용 표현 압축
+- **2026-03-07**: 파일명 D설계도_→D-Arch_ 일괄 전환, README 내용(SC-CHAT-0, 변경이력) Index 편입 후 README 삭제, Applied_Meta-Model_Draft [APP-DRAFT] 등재, d-lg/→ir/ 폴더명 및 IR 파일명 정리, 불필요 보조파일(d-arch-*.md, MM-Language_Boundary_Review) 삭제
+- **2026-02-25**: Applied_Field v2.0 전면 재작성 (FIELD-0~5.1)
+- **2026-02-17**: Applied_Language_Draft v0.3 반영, Index v1.3 동기화
+
+---
+
+**END OF DOCUMENT — D-Arch_Index v1.4.5**

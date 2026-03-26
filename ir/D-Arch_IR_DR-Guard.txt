@@ -1,0 +1,670 @@
+# D-Architecture Layer1 IR — Applied_DR-Guard v0.4
+# Scope: Applied_DR-Guard
+# Pilot: DR-G0 (full), DR-G1 (full), DR-G2 (full), DR-G3 (full),
+#        DR-G4 (full), DR-G5 (full), DR-G6 (full),
+#        DR-G7 (full), DR-G8 (full), DR-G9 (full)
+# Status: experimental representation
+# This IR does NOT replace canonical documents.
+
+ir_meta:
+  ir_version: "L1-guard-v0.4"
+  document_id: "D-Arch_IR_DR-Guard"
+  parent_ir: "D-Arch_IR_Core"
+
+  scope:
+    - "Applied_DR-Guard"
+
+  pilot_scope:
+    - "DR-G0"
+    - "DR-G1"
+    - "DR-G2"
+    - "DR-G3"
+    - "DR-G4"
+    - "DR-G5"
+    - "DR-G6"
+    - "DR-G7"
+    - "DR-G8"
+    - "DR-G9"
+
+  changelog:
+    v0.1:
+      - "Initial skeleton: DR-G0, DR-G1, DR-G2, DR-G3 as full nodes."
+      - "New type applied_guard introduced for [APP-GUARD] document status."
+      - "DR-GUARD applied_root added."
+      - "cross_ir_edges: DR-G0->RG-0 (D-Arch_IR_Life_Regulation), DR-G1->D19 (D-Arch_IR_Core), DR-G2->SC-1 (D-Arch_IR_Core), DR-G2->SC-3 (D-Arch_IR_Core), DR-G2->D19 (D-Arch_IR_Core), DR-G3->RG-3 (D-Arch_IR_Life_Regulation)."
+      - "interpretive_links added per node for SC/OC items not present in D-Arch_IR_Core."
+      - "Guards G-A4-01 through G-A4-06 established."
+      - "local_edges: DR-GUARD->DR-G0->DR-G1->DR-G2, DR-G1->DR-G3."
+      - "DR-G0 path: regulation_has_multiple_instances prepended."
+      - "DR-G2 path: which_erodes_I_min appended for I_min connection."
+    v0.1_to_v0.2:
+      - "DR-G4 added (full): sharing prohibition. deps: DR-G0. symbols empty. forbids: 6 items from source NonEvent."
+      - "DR-G5 added (full): conflict non-resolution. deps: DR-G1. path expanded to 4 failure routes (SC-1, SC-4, SC-3, SC-5). forbids: 5 items. interpretive_links: SC-3, SC-4, SC-5."
+      - "DR-G6 added (full): DR as state guard. deps: DR-G0. symbols empty (DR_state already in DR-G0). forbids: 5 items including dr_on_off_switch, dr_normal_abnormal_judgment. path expanded with SC-1/SC-3 references."
+      - "New local_edges: DR-G0->DR-G4, DR-G0->DR-G6, DR-G1->DR-G5."
+      - "New cross_ir_edges: DR-G5->SC-1 (D-Arch_IR_Core)."
+      - "New guards: G-A4-07 (sharing_prohibition_not_design), G-A4-08 (conflict_is_not_error), G-A4-09 (dr_entry_exit_undefined)."
+      - "G-A4-02 applies_to expanded with DR-G4, DR-G5, DR-G6."
+    v0.2_to_v0.3:
+      - "DR-G7 added (full): DR-PRE checklist. deps: [DR-G6]. path: 6 steps mapping to source ①~⑥."
+      - "DR-G7 forbids: 5 items. interpretive_links: DR-G1, DR-G3, DR-G4, DR-G5."
+      - "DR-G8 added (full): Intentional undefined set (whitespace declaration). deps: [DR-G6]."
+      - "DR-G8 forbids: 8 items (all from source 'what is not defined' list). interpretive_links: DR-G2, DR-G3."
+      - "DR-G9 added (full): LRE pressure appendix. deps: [DR-G8]. symbols: p_D, p_L."
+      - "DR-G9 forbids: 7 items. interpretive_links: DR-G3, DR-G7."
+      - "New local_edges: DR-G6->DR-G7, DR-G6->DR-G8, DR-G8->DR-G9."
+      - "New guards: G-A4-10 (checklist_not_deployment), G-A4-11 (whitespace_not_incompleteness), G-A4-12 (lre_observation_only)."
+      - "G-A4-02 applies_to expanded with DR-G7, DR-G8, DR-G9."
+      - "Applied_DR-Guard IR is now structurally complete (DR-G0~DR-G9 all full nodes)."
+    v0.3_to_v0.4:
+      - "New cross_ir_edge: DR-GUARD -> RG-8 (D-Arch_IR_Life_Regulation, supported_by). DR-Guard is the realized handler of RG-8 [OPEN] branch #2."
+      - "cross_ir_policy note updated to include D-Arch_IR_Life_Regulation RG-8 as branch source."
+      - "rel_policy note version updated to v0.4."
+      - "Branch map fixed: BR-1 DR [ACTIVE], BR-2 Consciousness [DEFERRED], BR-3 Meta-Model [PARKED]."
+      - "DR-G0 open_edge updated: DR-G6 now in scope."
+
+  layer_policy:
+    representation_only: true
+    canonical_replacement: false
+    closed_definition_forbidden: true
+    source_required: true
+
+  type_policy:
+    note: "type values are IR-internal helper classes, not canonical D-Arch status tags. applied_guard is introduced for [APP-GUARD] nodes that seal failure paths without defining the target structure."
+    values:
+      - "applied_root"
+      - "applied_guard"
+
+  cross_ir_policy:
+    enabled: true
+    note: "References to D-Arch_IR_Core and D-Arch_IR_Life_Regulation nodes must use cross_ir_edges and only target nodes that actually exist. DR-GUARD -> RG-8 references D-Arch_IR_Life_Regulation as branch source."
+
+  stub_policy:
+    enabled: false
+    note: "All DR-Guard nodes (DR-G0~DR-G9) are now full nodes. No stubs remain."
+
+  rel_policy:
+    note: "Relation vocabulary follows D-Arch_IR_Life_Regulation/03 provisional policy. No new rel types introduced in v0.4."
+    provisional_values:
+      - "opens"
+      - "grounds"
+      - "supported_by"
+
+  review_checks:
+    - "core_redefinition_absent"
+    - "guard_seal_only_no_definition"
+    - "cross_ir_reference_explicit"
+    - "direct_source_grounding_present"
+    - "closed_definition_signal_absent"
+
+# ==============================================================================
+# NODES
+# ==============================================================================
+
+nodes:
+
+  # --------------------------------------------------------------------------
+  # DR-GUARD — Applied Root
+  # --------------------------------------------------------------------------
+  - id: "DR-GUARD"
+    tag: "[APP-GUARD]"
+    type: "applied_root"
+    title: "Applied_DR-Guard"
+    role: "distributed regulation pre-deployment seal"
+    source:
+      - "D-Arch_Applied_DR-Guard.txt"
+      - "D-Arch_Index.txt / IDX-5, IDX-6"
+
+  # --------------------------------------------------------------------------
+  # DR-G0 — Status declaration (FULL NODE)
+  # --------------------------------------------------------------------------
+  - id: "DR-G0"
+    tag: "[APP-GUARD]"
+    type: "applied_guard"
+    title: "Distributed Regulation — 최소 선언 / Minimal status declaration"
+    deps:
+      - "RG-0"
+    symbols:
+      - "DR_state"
+    interpretive_links:
+      - id: "SC-9"
+        note: "DR이 정의 문서가 아닌 가드 문서로만 다뤄지는 근거는 완전 서술 불가능성(SC-9)이다. SC-9는 현재 어떤 IR에도 노드로 없으므로 interpretive."
+    path:
+      - "regulation_has_multiple_instances"
+      - "multiple_rg_exist"
+      - "rg_units_do_not_coordinate"
+      - "conflicts_are_not_resolved"
+      - "interference_is_limited_not_eliminated"
+    forbids:
+      - "dr_as_structure"
+      - "dr_as_system"
+      - "dr_as_layer"
+      - "dr_as_goal"
+      - "dr_as_cooperation_method"
+      - "dr_as_problem_solving"
+      - "dr_as_higher_stage"
+      - "dr_as_designed_structure"
+    gloss:
+      summary: "DR은 구조가 아니라 상태다. 복수 RG가 조정 없이 간섭 차단·완충만 수행하는 국면."
+      misread_guard: "DR을 시스템/구조/레이어/협력 방법/문제 해결 방식으로 정의하면 즉시 제도화되어 붕괴 경로에 들어간다."
+      open_edge: "DR-G6에서 이 선언의 언어적 가드가 상세화된다. DR-G4에서 공유 금지가, DR-G6에서 상태 가드가 이 노드의 봉인을 보강한다."
+    source:
+      - "D-Arch_Applied_DR-Guard.txt / DR-G0"
+
+  # --------------------------------------------------------------------------
+  # DR-G1 — Pressure emergence (FULL NODE)
+  # --------------------------------------------------------------------------
+  - id: "DR-G1"
+    tag: "[APP-GUARD]"
+    type: "applied_guard"
+    title: "DR 압력 발생 / Pressure emergence"
+    deps:
+      - "RG-0"
+    symbols:
+      - "single_RG_sufficiency_question"
+    interpretive_links:
+      - id: "SC-6"
+        note: "판정 분산(SC-6)은 단일 판정 집중 불가의 구조적 근거이며 DR 압력 배경을 이룬다. SC-6는 현재 어떤 IR에도 노드로 없으므로 interpretive."
+      - id: "SC-4"
+        note: "다양성 유지(SC-4)는 단일 RG 고정 시 상실되는 조건이며, DR 압력의 간접 배경이다. SC-4는 현재 어떤 IR에도 노드로 없으므로 interpretive."
+    path:
+      - "single_rg_operates_under_local_judgment"
+      - "life_and_environment_diverge_over_time"
+      - "judgment_contexts_overlap"
+      - "question_emerges_is_one_rg_enough"
+      - "this_question_is_dr_pressure"
+    forbids:
+      - "rg_unification_attempt"
+      - "central_coordination_solution"
+      - "global_judgment_as_dr_solution"
+    gloss:
+      summary: "RG가 오래 유지되면 분화·다중화·맥락 겹침이 발생하고, '하나로 충분한가'라는 질문이 DR 압력의 시작이다."
+      misread_guard: "DR 압력은 설계 결정이 아니라 시간의 결과다. 전역 판정이나 RG 통합으로 해결하려는 시도는 금지된다."
+      open_edge: "DR 압력이 발생한 이후 실패 경로는 DR-G2에서, 파손 신호는 DR-G3에서, 충돌 비해결 원칙은 DR-G5에서 봉인된다."
+    source:
+      - "D-Arch_Applied_DR-Guard.txt / DR-G1"
+
+  # --------------------------------------------------------------------------
+  # DR-G2 — Failure modes (FULL NODE)
+  # --------------------------------------------------------------------------
+  - id: "DR-G2"
+    tag: "[APP-GUARD]"
+    type: "applied_guard"
+    title: "DR 실패 조건 / Failure modes (F1–F4)"
+    deps:
+      - "DR-G1"
+    symbols:
+      - "F1_centralization"
+      - "F2_synchronization"
+      - "F3_communication_overload"
+      - "F4_blame_transfer"
+    interpretive_links:
+      - id: "SC-2"
+        note: "전지적 최적화 불가(SC-2)는 F1 중앙화 실패의 구조적 배경이다. SC-2는 현재 어떤 IR에도 노드로 없으므로 interpretive."
+      - id: "SC-4"
+        note: "다양성 유지(SC-4)는 F2 동기화 실패의 구조적 근거다. 다양성 상실은 단일 실패가 전체를 무너뜨리는 구조를 만든다. SC-4는 현재 어떤 IR에도 노드로 없으므로 interpretive."
+      - id: "SC-5"
+        note: "실패 제거 불가(SC-5)는 F3의 Suppress 오염 경로와 F4의 복원 통로 붕괴의 근거다. SC-5는 현재 어떤 IR에도 노드로 없으므로 interpretive."
+      - id: "OC-5"
+        note: "판정 충돌이 정상 상태(OC-5)라는 운용 조건은 DR-G2 전체의 배경 인식을 이룬다. OC-5는 현재 어떤 IR에도 노드로 없으므로 interpretive."
+    path:
+      - "dr_exists_but_option_closure_accelerates_then_dr_has_failed"
+      - "F1_centralization_creates_single_judgment_center"
+      - "F2_synchronization_converges_rate_and_timing"
+      - "F3_communication_expansion_increases_event_load"
+      - "F4_blame_transfer_destroys_restoration_channels"
+      - "each_path_accelerates_option_closure"
+      - "which_erodes_I_min"
+    forbids:
+      - "central_hub"
+      - "synchronization_convergence"
+      - "full_information_sharing"
+      - "responsibility_assignment"
+    gloss:
+      summary: "DR이 존재함으로써 오히려 O(x)가 더 빨리 닫히면 DR은 실패다. F1~F4는 네 가지 실패 경로."
+      misread_guard: "DR은 협력 구조가 아니라 붕괴 방지 상태이며, 중앙화·동기화·정보 공유·책임 전가가 나타나면 DR은 이미 실패한 것이다."
+      open_edge: "F1~F4 사이의 우선순위는 의도적으로 정의하지 않는다(DR-G8 여백 선언). DR-G4(공유 금지)와 DR-G5(충돌 비해결)가 F1~F4의 대응 봉인을 보강한다."
+    source:
+      - "D-Arch_Applied_DR-Guard.txt / DR-G2"
+
+  # --------------------------------------------------------------------------
+  # DR-G3 — Breakdown signals (FULL NODE)
+  # --------------------------------------------------------------------------
+  - id: "DR-G3"
+    tag: "[APP-GUARD]"
+    type: "applied_guard"
+    title: "단일 RG 파손 신호 / Single-RG breakdown signals (B1–B3)"
+    deps:
+      - "RG-3"
+    symbols:
+      - "B1_context_collision"
+      - "B2_velocity_collision"
+      - "B3_buffer_opacity"
+    interpretive_links:
+      - id: "RG-4"
+        note: "파손 신호는 RG-4 게이트의 작동 한계에서도 관측되나, B1~B3의 직접 출처는 RG-3 4요소이므로 interpretive로 둔다. RG-4는 D-Arch_IR_Life_Regulation에 노드로 존재하지만, cross_ir 연결은 과잉이라 판단."
+    path:
+      - "B1_context_collision_divergent_judgments_on_same_event"
+      - "B2_velocity_collision_suppress_delay_increase_without_stability_gain"
+      - "B3_buffer_opacity_internal_stability_masks_external_change"
+      - "these_signals_indicate_single_rg_limit"
+      - "breakdown_is_not_failure_but_pressure_signal"
+    forbids:
+      - "single_rg_global_fix"
+      - "breakdown_as_dr_mandate"
+    gloss:
+      summary: "B1~B3은 단일 RG가 한계에 도달했다는 압력 신호이지, DR 전개를 강제하는 명령이 아니다."
+      misread_guard: "파손 신호가 있다고 DR로 가야 하는 것은 아니다. 파손은 DR 압력의 존재 신호일 뿐, 전개 강제가 아니다."
+      open_edge: "b₁/b₂/b₃ 지시자와 p_D 압력 표기는 DR-G9에서 관측 수식으로 다룬다."
+    source:
+      - "D-Arch_Applied_DR-Guard.txt / DR-G3"
+
+  # --------------------------------------------------------------------------
+  # DR-G4 — Sharing prohibition (FULL NODE, v0.2 new)
+  # --------------------------------------------------------------------------
+  - id: "DR-G4"
+    tag: "[APP-GUARD]"
+    type: "applied_guard"
+    title: "공유 금지 / Sharing prohibition"
+    deps:
+      - "DR-G0"
+    symbols: []
+    interpretive_links: []
+    path:
+      - "multiple_rg_attempt_information_alignment"
+      - "alignment_requires_internal_state_sharing"
+      - "shared_state_creates_hidden_centralization"
+      - "hidden_centralization_leads_to_F1_path"
+    forbids:
+      - "internal_state_sharing"
+      - "evaluation_criteria_sharing"
+      - "global_theta_sharing"
+      - "selection_history_sharing"
+      - "restoration_strategy_sharing"
+      - "goal_sharing"
+    gloss:
+      summary: "DR 상태에서는 RG 간 핵심 내부 정보 공유가 금지된다. 정보 부족이 문제가 아니라, 정보 공유가 중앙화를 만들기 때문에 금지된다."
+      misread_guard: "DR은 '정보를 나누는 구조'가 아니라 '서로 망치지 않게 막는 구조'다."
+      open_edge: "허용되는 최소 신호는 세 가지뿐이다: (1) 과부하 신호(상태값 아님), (2) 경계 침범 금지 선언, (3) 시간 분리 요청. 이 세 가지 이외의 공유는 금지선 침범이다."
+    source:
+      - "D-Arch_Applied_DR-Guard.txt / DR-G4"
+
+  # --------------------------------------------------------------------------
+  # DR-G5 — Conflict non-resolution (FULL NODE, v0.2 new)
+  # --------------------------------------------------------------------------
+  - id: "DR-G5"
+    tag: "[APP-GUARD]"
+    type: "applied_guard"
+    title: "충돌 비해결 원칙 / Conflict non-resolution principle"
+    deps:
+      - "DR-G1"
+    symbols: []
+    interpretive_links:
+      - id: "SC-3"
+        note: "충돌 해결을 위한 정보 교환은 사건 수 증가로 선택 속도 상한(SC-3)을 침식한다. SC-3는 D-Arch_IR_Core에 노드로 존재하지만, DR-G5의 직접 전제가 아닌 해결 시도의 귀결 경로이므로 interpretive."
+      - id: "SC-4"
+        note: "충돌 해결을 위한 동기화 강제는 다양성 상실(SC-4) 경로를 연다. SC-4는 현재 어떤 IR에도 노드로 없으므로 interpretive."
+      - id: "SC-5"
+        note: "충돌 해결을 위한 책임 구조 생성은 실패 제거 압력(SC-5) 경로를 연다. SC-5는 현재 어떤 IR에도 노드로 없으므로 interpretive."
+    path:
+      - "multiple_rg_judgments_diverge"
+      - "resolution_attempt_requires_single_standard_or_synchronization"
+      - "single_standard_reintroduces_SC1_goal_fixation"
+      - "synchronization_reintroduces_SC4_diversity_loss"
+      - "information_exchange_reintroduces_SC3_speed_limit"
+      - "responsibility_structure_reintroduces_SC5_failure_removal"
+      - "therefore_conflict_is_not_resolved_but_contained"
+    forbids:
+      - "conflict_resolution_mechanism"
+      - "consensus_enforcement"
+      - "global_priority_rule"
+      - "conflict_as_error"
+      - "conflict_free_state_as_goal"
+    gloss:
+      summary: "DR에서는 충돌을 해결하지 않는다. 해결 시도는 중앙화·동기화·정보 폭증 경로를 열어 DR을 붕괴시킨다."
+      misread_guard: "충돌은 오류가 아니라 다양성의 표면적 표현이다. 충돌 없는 상태가 목표가 되는 순간 DR은 정치가 된다."
+      open_edge: "허용되는 충돌 처리(해결 아님)는 네 가지다: C1 경계 분리, C2 시간 분리, C3 영향량 감쇠, C4 무시 허용. 이것들은 충돌을 '확산되지 않게' 두는 방식이다."
+    source:
+      - "D-Arch_Applied_DR-Guard.txt / DR-G5"
+
+  # --------------------------------------------------------------------------
+  # DR-G6 — DR as state guard (FULL NODE, v0.2 new)
+  # --------------------------------------------------------------------------
+  - id: "DR-G6"
+    tag: "[APP-GUARD]"
+    type: "applied_guard"
+    title: "DR = 상태 / DR as state guard"
+    deps:
+      - "DR-G0"
+    symbols: []
+    interpretive_links:
+      - id: "SC-9"
+        note: "DR을 구조로 만들면 자기 방어(SC-9 자기완결 시도) 경로가 열린다. DR-G0에서도 SC-9를 참조하지만, 여기서는 '구조 = 자기 방어' 맥락으로 별도 참조."
+    path:
+      - "dr_is_not_defined_as_structure"
+      - "dr_is_not_stable_system"
+      - "dr_is_transient_state_of_multiple_rg"
+      - "attempt_to_formalize_dr_creates_optimization_target"
+      - "optimization_target_reintroduces_SC1_fixation"
+      - "maintenance_pressure_reintroduces_SC3_cost_accumulation"
+    forbids:
+      - "dr_as_architecture"
+      - "dr_as_protocol"
+      - "dr_as_policy"
+      - "dr_on_off_switch"
+      - "dr_normal_abnormal_judgment"
+    gloss:
+      summary: "DR은 시스템이 아니라 상태다. DR을 구조로 만들면 즉시 DR이 아닌 것이 된다."
+      misread_guard: "DR을 '가지고 있다', '운영한다', '활성화했다'고 표현하는 순간 DR은 목적·정책·제도가 된다."
+      open_edge: "DR 상태의 진입/퇴출 조건은 의도적으로 정의하지 않는다(DR-G8 여백 선언). 정의하는 순간 DR은 정책이 되고, 조건은 임계가 되고, 임계는 목표가 된다."
+    source:
+      - "D-Arch_Applied_DR-Guard.txt / DR-G6"
+
+  # --------------------------------------------------------------------------
+  # DR-G7 — DR-PRE checklist (FULL NODE, v0.3 new)
+  # --------------------------------------------------------------------------
+  - id: "DR-G7"
+    tag: "[APP-GUARD]"
+    type: "applied_guard"
+    title: "전개 전 체크리스트 / DR-PRE checklist"
+    deps:
+      - "DR-G6"
+    symbols: []
+    interpretive_links:
+      - id: "DR-G1"
+        note: "DR 압력의 동기가 조정/합의 욕구인지 점검하는 체크리스트 ②의 배경이다."
+      - id: "DR-G3"
+        note: "단일 RG 파손 신호(B1~B3)가 체크리스트 ①의 직접 대상이다."
+      - id: "DR-G4"
+        note: "공유 금지선은 체크리스트 ③에서 점검된다."
+      - id: "DR-G5"
+        note: "충돌을 해결 대상으로 보는지 여부는 체크리스트 ④에서 점검된다."
+    path:
+      - "single_rg_breakdown_signal_is_checked"
+      - "coordination_or_consensus_desire_is_checked"
+      - "sharing_prohibition_violation_is_checked"
+      - "conflict_is_checked_for_resolution_mindset"
+      - "dr_is_checked_as_state_not_structure"
+      - "final_readiness_signal_is_conditionally_released"
+    forbids:
+      - "dr_pre_as_deployment_command"
+      - "dr_pre_as_repeated_operational_routine"
+      - "ambiguous_pass_as_permission"
+      - "checklist_pass_means_design_start"
+      - "checklist_pass_means_next_stage"
+    gloss:
+      summary: "DR-G7은 DR을 지금 건드려도 되는지 점검하는 봉인 체크리스트다."
+      misread_guard: "통과해도 전개를 강제하지 않는다. 하나라도 애매하면 전개 보류가 정답이다."
+      open_edge: "체크리스트는 DR을 설계하지 않는다. DR-G8에서 의도적 미정 항목이, DR-G9에서 LRE 압력이 이어진다."
+    source:
+      - "D-Arch_Applied_DR-Guard.txt / DR-G7"
+
+  # --------------------------------------------------------------------------
+  # DR-G8 — Intentional undefined set (FULL NODE, v0.3 new)
+  # --------------------------------------------------------------------------
+  - id: "DR-G8"
+    tag: "[APP-GUARD]"
+    type: "applied_guard"
+    title: "의도적 미정 항목 / Intentional undefined set (whitespace declaration)"
+    deps:
+      - "DR-G6"
+    symbols: []
+    interpretive_links:
+      - id: "DR-G2"
+        note: "F1~F4 우선순위를 정의하지 않는다는 봉인은 실패 조건을 단일 체계로 닫지 않기 위한 것이다."
+      - id: "DR-G3"
+        note: "B1~B3 우선순위를 정의하지 않는다는 봉인은 파손 신호를 단일 임계 체계로 닫지 않기 위한 것이다."
+    path:
+      - "dr_is_treated_as_state_not_structure"
+      - "therefore_operational_completeness_is_intentionally_refused"
+      - "single_metric_for_dr_normal_operation_is_not_defined"
+      - "priority_order_between_failure_modes_is_not_defined"
+      - "priority_order_between_breakdown_signals_is_not_defined"
+      - "duration_success_limit_and_replacement_state_are_not_defined"
+    forbids:
+      - "single_metric_for_dr_normal_operation"
+      - "priority_order_for_F1_to_F4"
+      - "priority_order_for_B1_to_B3"
+      - "maximum_duration_of_dr_state"
+      - "success_failure_verdict_of_dr_state"
+      - "better_state_replacing_dr"
+      - "conflict_tolerance_limit"
+      - "protocol_or_algorithmic_implementation"
+    gloss:
+      summary: "DR-G8은 DR 상태를 닫힌 운용 체계로 만들지 않기 위해, 의도적으로 정의하지 않는 항목들을 선언하는 노드다."
+      misread_guard: "이 여백은 미완성이 아니라 완충 공간이다. 지금 닫는 순간 DR은 정책이 된다."
+      open_edge: "DR-G9에서 p_D, p_L, 조기경보와 분기 압력이 관측 표기로 이어진다."
+    source:
+      - "D-Arch_Applied_DR-Guard.txt / DR-G8"
+
+  # --------------------------------------------------------------------------
+  # DR-G9 — LRE pressure appendix (FULL NODE, v0.3 new)
+  # --------------------------------------------------------------------------
+  - id: "DR-G9"
+    tag: "[APP-GUARD]"
+    type: "applied_guard"
+    title: "LRE 압력 부록 / LRE pressure appendix"
+    deps:
+      - "DR-G8"
+    symbols:
+      - "p_D"
+      - "p_L"
+    interpretive_links:
+      - id: "DR-G3"
+        note: "b₁/b₂/b₃ 파손 신호가 p_D 표기의 직접 입력 배경이다."
+      - id: "DR-G7"
+        note: "조기경보 체크리스트는 DR-PRE 이후의 관측 부록으로 읽힌다."
+    path:
+      - "breakdown_signals_are_encoded_as_p_D"
+      - "language_rule_externalization_pressure_is_encoded_as_p_L"
+      - "early_warning_detects_lre_rise_before_externalization"
+      - "branch_pressure_is_recorded_not_resolved"
+      - "lre_is_not_next_stage_but_monitoring_appendix"
+    forbids:
+      - "lre_as_next_stage"
+      - "lre_as_civilization_substage"
+      - "lre_as_suppression_target"
+      - "lre_as_problem_to_solve"
+      - "p_D_as_transition_trigger"
+      - "p_L_as_transition_trigger"
+      - "lre_resolution_by_rule_writing"
+    gloss:
+      summary: "DR-G9는 DR 상태에서 발생하는 LRE 압력을 관측 표기로만 기록하는 부록 노드다."
+      misread_guard: "압력은 조기 감지 대상이지, 다음 단계나 해결 목표가 아니다."
+      open_edge: "여기서는 압력을 기록만 한다. 정의·설계·정당화로 넘어가지 않는다."
+    source:
+      - "D-Arch_Applied_DR-Guard.txt / DR-G9"
+
+# ==============================================================================
+# LOCAL EDGES
+# ==============================================================================
+
+local_edges:
+
+  # --- v0.1 edges (preserved) ---
+
+  - from: "DR-GUARD"
+    to: "DR-G0"
+    rel: "grounds"
+    note: "DR-Guard root opens with the minimal status declaration."
+
+  - from: "DR-G0"
+    to: "DR-G1"
+    rel: "opens"
+    note: "Once DR is declared as a state (not structure), the question of why DR pressure emerges is opened."
+
+  - from: "DR-G1"
+    to: "DR-G2"
+    rel: "opens"
+    note: "Once DR pressure is established, the failure modes that destroy DR can be sealed."
+
+  - from: "DR-G1"
+    to: "DR-G3"
+    rel: "opens"
+    note: "DR pressure also opens the question of what breakdown signals indicate single-RG limits."
+
+  # --- v0.2 new edges ---
+
+  - from: "DR-G0"
+    to: "DR-G4"
+    rel: "opens"
+    note: "DR status declaration directly opens the sharing prohibition seal: DR is not an information-sharing structure."
+
+  - from: "DR-G0"
+    to: "DR-G6"
+    rel: "opens"
+    note: "DR status declaration opens the language guard that prevents DR from being treated as a structure."
+
+  - from: "DR-G1"
+    to: "DR-G5"
+    rel: "opens"
+    note: "DR pressure (multiple RG divergence) opens the conflict non-resolution principle."
+
+  # --- v0.3 new edges ---
+
+  - from: "DR-G6"
+    to: "DR-G7"
+    rel: "opens"
+    note: "DR을 상태로만 취급할 수 있을 때만 DR-PRE 체크리스트가 열린다."
+
+  - from: "DR-G6"
+    to: "DR-G8"
+    rel: "opens"
+    note: "DR을 상태로만 취급할 때, 무엇을 의도적으로 정의하지 않을지도 함께 봉인된다."
+
+  - from: "DR-G8"
+    to: "DR-G9"
+    rel: "opens"
+    note: "의도적 미정 항목을 유지한 채, 압력은 관측 표기로만 부록화된다."
+
+# ==============================================================================
+# CROSS-IR EDGES
+# ==============================================================================
+
+cross_ir_edges:
+
+  # --- DR-GUARD branch provenance (v0.4 new) ---
+  - from: "DR-GUARD"
+    to: "RG-8"
+    source_ir: "D-Arch_IR_Life_Regulation"
+    rel: "supported_by"
+    note: "DR-Guard는 RG-8의 [OPEN] 분기 #2 (Regulation → Distributed Regulation)의 실현 핸들러다."
+
+  # --- DR-G0 ---
+  - from: "DR-G0"
+    to: "RG-0"
+    source_ir: "D-Arch_IR_Life_Regulation"
+    rel: "supported_by"
+    note: "DR is positioned after Regulation; DR-G0's status declaration rests on Regulation's existence (RG-0)."
+
+  # --- DR-G1 ---
+  - from: "DR-G1"
+    to: "D19"
+    source_ir: "D-Arch_IR_Core"
+    rel: "supported_by"
+    note: "전역 판정 불가(D19)가 다중 RG 압력의 구조적 근거. 단일 RG의 국소 한계가 DR 압력을 필연화한다."
+
+  # --- DR-G2 ---
+  - from: "DR-G2"
+    to: "SC-1"
+    source_ir: "D-Arch_IR_Core"
+    rel: "supported_by"
+    note: "F1 중앙화는 단일 목적 고정(SC-1) 경로에 진입하며, DR 해결 시도는 SC-1 위반이다."
+
+  - from: "DR-G2"
+    to: "SC-3"
+    source_ir: "D-Arch_IR_Core"
+    rel: "supported_by"
+    note: "F3 통신 과부하는 사건 수 증가로 선택 속도 상한(SC-3)을 침식한다."
+
+  - from: "DR-G2"
+    to: "D19"
+    source_ir: "D-Arch_IR_Core"
+    rel: "supported_by"
+    note: "F1 중앙화 실패의 배경: 단일 판정 중심은 D19(전역 접근 불가) 압력을 받아 옵션을 닫는다."
+
+  # --- DR-G3 ---
+  - from: "DR-G3"
+    to: "RG-3"
+    source_ir: "D-Arch_IR_Life_Regulation"
+    rel: "supported_by"
+    note: "B1~B3 파손 신호는 RG-3 4요소(Rate/Delay/Buffer/Suppress)의 작동 한계에서 발생한다."
+
+  # --- DR-G5 ---
+  - from: "DR-G5"
+    to: "SC-1"
+    source_ir: "D-Arch_IR_Core"
+    rel: "supported_by"
+    note: "충돌 해결을 위한 단일 기준 생성은 SC-1(목적 고정 불가) 경로에 진입한다."
+
+# ==============================================================================
+# GUARDS
+# ==============================================================================
+
+guards:
+
+  - id: "G-A4-01"
+    applies_to: ["all"]
+    text: "dr_guard_not_canonical"
+    note: "D-Arch_IR_DR-Guard does not replace canonical Applied_DR-Guard."
+
+  - id: "G-A4-02"
+    applies_to: ["DR-GUARD", "DR-G0", "DR-G1", "DR-G2", "DR-G3", "DR-G4", "DR-G5", "DR-G6", "DR-G7", "DR-G8", "DR-G9"]
+    text: "seal_only_no_definition"
+    note: "DR-Guard nodes seal failure paths. They do not define what DR is, how it works, or how to implement it."
+
+  - id: "G-A4-03"
+    applies_to: ["DR-G0", "DR-G6"]
+    text: "dr_is_state_not_structure"
+    note: "DR must be treated as a transient state, never as a system, architecture, layer, or policy."
+
+  - id: "G-A4-04"
+    applies_to: ["DR-G2"]
+    text: "failure_modes_are_seals_not_design_guides"
+    note: "F1~F4 describe how DR fails. They do not prescribe what DR should look like."
+
+  - id: "G-A4-05"
+    applies_to: ["DR-G3"]
+    text: "breakdown_is_signal_not_mandate"
+    note: "B1~B3 breakdown signals indicate single-RG limits. They do not mandate DR deployment."
+
+  - id: "G-A4-06"
+    applies_to: ["cross_ir_edges"]
+    text: "cross_ir_explicit_only"
+    note: "Any dependency on D-Arch_IR_Core or D-Arch_IR_Life_Regulation must target nodes that actually exist there and be declared explicitly."
+
+  - id: "G-A4-07"
+    applies_to: ["DR-G4"]
+    text: "sharing_prohibition_not_design"
+    note: "The six sharing prohibitions are seals, not design specifications for an information architecture. The three permitted minimal signals are exhaustive."
+
+  - id: "G-A4-08"
+    applies_to: ["DR-G5"]
+    text: "conflict_is_not_error"
+    note: "Conflict in DR is divergent regulation response, not logical error. Resolution attempts reintroduce centralization."
+
+  - id: "G-A4-09"
+    applies_to: ["DR-G6"]
+    text: "dr_entry_exit_undefined"
+    note: "DR state entry/exit conditions are intentionally undefined. Defining them turns DR into policy."
+
+  # --- v0.3 new guards ---
+
+  - id: "G-A4-10"
+    applies_to: ["DR-G7"]
+    text: "checklist_not_deployment"
+    note: "DR-PRE checklist passage does not command deployment. Ambiguous results mean deferral, not forced action."
+
+  - id: "G-A4-11"
+    applies_to: ["DR-G8"]
+    text: "whitespace_not_incompleteness"
+    note: "Intentionally undefined items are buffer space, not missing specifications. Closing them turns DR into policy."
+
+  - id: "G-A4-12"
+    applies_to: ["DR-G9"]
+    text: "lre_observation_only"
+    note: "p_D and p_L are observation markers, not transition triggers. LRE pressure is detected, not resolved."
+
+# ==============================================================================
+# END OF FILE
+# ==============================================================================

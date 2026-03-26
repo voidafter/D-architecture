@@ -1,0 +1,232 @@
+# D-Architecture Compressed Reference (Layer α)
+> This file is a compressed expert-level reference for D설계도 (D-Architecture).
+> For details on any section, read the source file listed in §7 (File Index).
+> **WARNING**: This reference is a partial description (SC-9 applies to this document itself).
+
+---
+
+## §0. Startup Load Profile (chat initialization)
+
+Use only the minimal bootstrap set first:
+
+1) `d-arch-reference.txt` (this file)  
+2) `D-Arch_Index.txt` (branches, draft/guard status, termination line)
+
+Load originals only on demand:
+- `D-Arch_Core_formal` for mathematical formalization / identifier-preserving translation questions
+- `D-Arch_Applied_Language_Draft.txt` for Language / `LANG-10 CIV_handoff` / LRE boundary questions
+- `D-Arch_Applied_Meta-Model_Draft.txt` for Meta-Model boundary or draft-status questions
+- `D-Arch_Applied_DR-Guard.txt` for DR / distributed regulation guard questions
+
+Rules:
+- `D-Arch_Index.txt` is a structure map, not a proof text.
+- `D-Arch_Core_formal` is a Core companion file, not a new canonical source.
+- If `Core` and `Core_formal` differ, follow `D-Arch_Core.txt` + `D-Arch_Index.txt`.
+- Do not promote draft/guard documents beyond their labeled status.
+- Stop Language interpretation at `LANG-10 CIV_handoff`; hand off to Civilization guard domain.
+
+---
+## §1. Core Axioms & Structures (D0–D23)
+
+### Axioms [AXIOM]
+- **D0 (Existence)**: Ω ≠ ∅ — state space is non-empty. Does NOT guarantee complete describability.
+- **D1 (Distinction)**: Ω partitions into non-overlapping parts. No distinction → no information.
+- **D2 (Relation)**: R ⊆ Ω × Ω — states are connected.
+- **D3 (Transition)**: T ⊆ R — some relations are state changes. Time ≡ ordering of transitions.
+
+### Basic Structures [NEC]
+- **D4 (Indeterminacy)**: |Ω| > 1 → which state realizes is undetermined.
+- **D5 (Observation)**: O: Ω → Y, lossy mapping. ΔH ≥ 0 per observation.
+- **D6 (Constraint)**: Γ ⊆ T — recurring transition patterns become constraints.
+- **D7 (Evaluation)**: J(x) ∈ ℝⁿ — multi-dimensional evaluation, NOT single score.
+- **D8 (Boundary)**: x = (internal, external). No boundary → no agent.
+- **D9 (Selection)**: x* ∈ arg opt J̃(x). Selection irreversibly shrinks Ω. J̃ is NOT a goal function — it's a projected discriminant. Selection does NOT presuppose will/intent/purpose.
+- **D10 (Attribution)**: M: S→S, Self := {x | M(x)=x}. Attribution of selections to agents.
+- **D11 (Integrated Selection)**: Multiple selections unified under one coherent agent. Functional definition only.
+- **D11' (Experiential Condition) [OPEN]**: Whether integrated selection manifests as experience — structurally undecidable. NOT a goal, NOT a stage to reach.
+
+### Selection System [NEC]
+- **D12 (Stability)**: ∃ Attractor A ⊆ Ω. System persists near A.
+- **D13 (Option Shrinkage)**: Selection → |O(x)| decreases. All selection has cost.
+- **D14 (Meta-Evaluation)**: J_meta evaluates J itself. Without it, criteria cannot be corrected.
+- **D15 (Threshold)**: ∃Θ s.t. |O(x)| < Θ → collapse risk.
+- **D16 (Restoration)**: R: collapse risk → option recovery attempt. Without it, all systems eventually collapse.
+- **D17 (Cost)**: C(a) > 0 for all actions.
+- **D18 (Delay)**: t(effect) > t(cause). No instant causation.
+- **D19 (Closure Boundary)**: Ω_local ⊂ Ω, ∂Ω_local ≠ ∅. No system accesses full Ω. This is the source of locality.
+- **D19.x (Enclosure) [COND]**: Internal state independent from external given boundary. Markov blanket in Core language.
+
+### Operational Layer [NEC]
+- **D20 (Overheating)**: Single goal + acceleration → Θ approach. I_min erosion path.
+- **D21 (Buffering)**: Dispersal/deferral/diversification → O(x) maintained. I_min preservation.
+- **D22 (Non-Intervention)**: Buffering must work through structure alone, not external intervention.
+- **D23 (Termination)**: System ending as completion (not collapse) → transition to higher system.
+
+---
+
+## §2. Core Invariant
+
+```
+I_min ≡ ∃t'>t : O(x_t') ≠ ∅
+```
+"Future selection possibility must remain."
+
+- I_min is a judgment criterion, NOT an optimization target (SC-1 violation if optimized).
+- Only "maintenance check" is permitted.
+
+---
+
+## §3. Symbol Table
+
+| Symbol | Type | Definition |
+|--------|------|-----------|
+| Ω | Set | Full state space |
+| Ω_local | Set | Locally accessible state space (D19) |
+| T | Set | Allowed transitions |
+| O(x) | Function | Reachable options from state x |
+| Ô(x) | Approx | (N̂, R̂, T̂) — approximate option space |
+| N̂(x) | Estimate | Reachable state count estimate |
+| R̂(x) | Estimate | Restorability estimate (∅ = danger signal) |
+| T̂(x) | Estimate | Temporal viability estimate |
+| ΔH | Function | Information reduction (observation cost) |
+| Θ | Constant / Pattern | Core: collapse threshold constant. In OC, judged as pattern co-occurrence, NOT a single number |
+| R | Set | Restoration actions |
+| I_min | Invariant | ∃t'>t : O(x_t') ≠ ∅ |
+| M | Function | Attribution mapping (self-model) |
+| J | Function | Evaluation function (vector) |
+| J̃ | Function | Projected discriminant (NOT goal function) |
+| Γ | Set | Constraints (recurring transition patterns) |
+| B | Operator | Boundary (internal/external separation) |
+| A(x) | Set | Permitted actions at state x (open, state-dependent, non-closable) |
+| ℒ | System | Description system (distinction + selection procedure) |
+| Desc_ℒ(Ω) | Subset | States captured by description system ℒ |
+
+---
+
+## §4. Structural Consequences (SC-1~9)
+
+These are NOT choices but unavoidable consequences of any selection system maintaining I_min.
+
+| SC | Name | Core Formula | Key Implication |
+|----|------|-------------|-----------------|
+| SC-1 | Goal fixation impossible | Fixation → |O(x)|↓ → ¬I_min | Goals must be temporary or under higher constraints |
+| SC-2 | Omniscient optimization impossible | Requires D19 violation | Only partial, local judgment allowed |
+| SC-3 | Selection speed limit | d|O(x)|/dt < -λ → collapse | Stop/observe/defer are structural necessities |
+| SC-4 | Diversity mandatory | Monoculture → |O(x)| → Θ | Diversity is stability condition, not value |
+| SC-5 | Failure non-removable | Elimination → R blocked → collapse | Failure is a necessary condition |
+| SC-5.1 | A(x) properties | Non-closure, state-dependent | A(x) cannot be fully closed or fixed |
+| SC-6 | Distributed judgment | Central → fragility | Judgment inevitably distributes |
+| SC-7 | Identity non-fixed | Fixed ID → A restricted → collapse | Identity is variable structure |
+| SC-8 | Coupling theorem | ¬(D10∧D21∧D22∧D23) → collapse ∈ {A,B,C,D} | Four collapse types from coupling failure |
+| SC-9 | Description incompleteness | ∀ℒ, ∃ω∉Desc_ℒ(Ω) | No system fully describes Ω. Applies to D-Arch itself. |
+| SC-9.1 | Coding-correction-gauge chain | Info limit → coding → error correction → gauge | Physical consequence of SC-9 |
+
+---
+
+## §5. Operational Conditions (OC-1~10)
+
+| OC | Key Rule |
+|----|----------|
+| OC-1 | O(x) approximated as Ô(x) = (N̂, R̂, T̂). Absolute values forbidden. Trend detection only. |
+| OC-1-A/B | Approximation error (ε, δ) always exists. Single-indicator Θ judgment forbidden. |
+| OC-2 | **Θ is a pattern, not a number**: {N̂↓, R̂=∅, T̂↓} simultaneous = Θ approach. |
+| OC-3 | Restoration has finite budget. ∑Cost(r_i) ≤ H_max. Late restoration costs more. |
+| OC-4 | Stop and pause are structural necessities, not failures. |
+| OC-5 | Judgment disagreement is normal state. Central resolution forbidden. |
+| OC-6 | Representation (state, boundary, options) is necessary for implementation. |
+| OC-7 | Verification only through violation detection and falsification. |
+| OC-8 | Self-closure prohibited. "Fully understood" = self-closure signal → immediate review. |
+| OC-9 | Operational illusion guards (A~F): stability-as-goal forbidden, irreversibility illusion, restoration overconfidence, record misunderstanding, goal/meta-goal contamination, intent-as-cause forbidden. |
+| OC-10 | Core violation signals (A~D): axiom redefinition, explanation singularization, recursive stability collapse, boundary ambiguity. |
+
+---
+
+## §6. Applied Documents Summary
+
+### Applied_Matter [APP]
+- Matter = persistence-pressure selection constraints; upstream substrate for Field/Life.
+- Guard: applied correspondence layer only; no Core/SC redefinition.
+
+### Applied_Field [APP]
+- Field = constraint relay / condition modification layer; not communication, copying, shared memory, or a physics field definition.
+- Chain: Matter constraint accumulation -> `FIELD-4` condition modification -> `FIELD-5` pressure -> `LIFE-(-1)`.
+
+### Applied_Life [APP]
+- Life = boundary maintenance pattern under repeated constraints; persistence condition is `I_min`, not survival optimization.
+- Chain: `LIFE-P0 -> FIELD-4 -> LIFE-(-1) -> LIFE-0`; boundary can emerge as the low-cost `I_min` solution when sufficient conditions are met.
+
+### Applied_Regulation [APP]
+- Regulation = selection suppression structure for `I_min` maintenance.
+- Minimum set: Rate / Delay / Buffer / Suppress, plus `RG-6` Restoration Channel and `RG-7` Proto-Model.
+
+### Applied_Meta-Model [APP-DRAFT]
+- RG-8 `[OPEN]` A-branch for relation residues between Proto-Model summaries.
+- Draft only: not a world model / explanation / prediction / decision engine; Language boundary and Consciousness ordering remain unresolved.
+
+### Applied_DR-Guard [APP-GUARD]
+- DR = state, not unified system; it is guarded through failure conditions and spread prevention.
+- Sharing/global coordination are prohibited; `LRE` pressure is an early warning, not a transition trigger.
+
+### Applied_Language_Draft [APP-DRAFT] (guard included)
+- Pre-semantic, pre-civilization layer: `LRP -> DR -> LRE -> Language`.
+- Draft/guard locks: `LANG-10 CIV_handoff` is the scope boundary, `LANG-11` is the termination guard.
+
+### Applied_Civilization [APP] + [APP-GUARD]
+- Civilization = option elimination externalization (`K_out`) on the D-required path.
+- Guard: singular definition, centralized judgment, failure moralization, or "maintaining openness" all become collapse paths.
+
+### Applied_Consciousness [APP] + [APP-GUARD]
+- Minimal V/I/S structure under representation pressure.
+- Post-civilization branch; not a final stage or doctrine target.
+
+### Applied_Intelligence [APP] + [APP-GUARD]
+- Minimal J/X/R structure under agency pressure.
+- `AG-7` meaning-compression pressure is the D-Arch termination line.
+
+### Applied_AI [APP]
+- AI = selection-maintaining system, not answer machine; persistence = `I_min`, not performance.
+- `D11'` is never a design target; design uses collapse criteria, not goals.
+
+### Applied_NonEvent [APP] — Meta-guard for ALL Applied
+- `NE-7`: if the system survives without it, do not do it.
+- Hard stops: explanation demand, success display, speed increase, record accumulation.
+
+---
+
+## §7. File Index (for on-demand Layer β reading)
+
+| Topic | File Path (relative to d-arch/) |
+|-------|-------------------------------|
+| Core D0-D23, SC summary, OC summary | D-Arch_Core.txt |
+| Document hierarchy, branch rules | D-Arch_Index.txt |
+| Core identifier-preserving formalization companion | D-Arch_Core_formal |
+| SC-1~9 detailed proofs | D-Arch_SC_Detail.txt |
+| SC formal proof extension | D-Arch_SC_Formal.txt |
+| SC matter formal proof extension | D-Arch_SC_Matter_Formal.txt |
+| OC-1~10 detailed conditions | D-Arch_OC_Detail.txt |
+| Physics correspondence overview | D-Arch_Physics.txt |
+| Physics P1 | D-Arch_Physics-P1.txt |
+| Physics P2 | D-Arch_Physics-P2.txt |
+| Physics P3 | D-Arch_Physics-P3.txt |
+| Physics P4 | D-Arch_Physics-P4.txt |
+| Physics P5 | D-Arch_Physics-P5.txt |
+| Physics P6 | D-Arch_Physics-P6.txt |
+| Physics POST | D-Arch_Physics_POST.txt |
+| Matter: structural selection under constraints | D-Arch_Applied_Matter.txt |
+| Field: constraint transmission layer | D-Arch_Applied_Field.txt |
+| Life: boundary formation & maintenance | D-Arch_Applied_Life.txt |
+| Regulation: Rate/Delay/Buffer/Suppress | D-Arch_Applied_Regulation.txt |
+| Meta-Model Draft: minimal relation structure for Proto-Model summaries | D-Arch_Applied_Meta-Model_Draft.txt |
+| DR-Guard: distributed regulation guard | D-Arch_Applied_DR-Guard.txt |
+| Language Draft: LRP->DR->LRE pre-semantic layer | D-Arch_Applied_Language_Draft.txt |
+| Civilization: option externalization | D-Arch_Applied_Civilization.txt |
+| Consciousness: V/I/S minimum structure | D-Arch_Applied_Consciousness.txt |
+| Intelligence: J/X/R minimum structure + termination relation | D-Arch_Applied_Intelligence.txt |
+| AI: selection system design | D-Arch_Applied_AI.txt |
+| NonEvent: meta-guard for all Applied | D-Arch_Applied_NonEvent.txt |
+| Origin: experience-to-structure correspondence | D-Arch_Origin.txt |
+
+---
+*Reference version: 2026-03-26 | Source: D-Arch v1.2.2 + D-Arch_Index v1.4.5 + D-Arch_Core_formal v0.7.2 + Applied_Field v2.0 + Applied_Language_Draft v0.3 + Applied_Meta-Model_Draft v0.3-draft*
+*Updated: 2026-03-26 | Core_Formal companion 지위 반영, Core v1.2.2 / Index v1.4.5 동기화, Θ / Desc_ℒ(Ω) 표기 정합*
+*This document is subject to SC-9: it cannot fully capture D-Architecture.*
