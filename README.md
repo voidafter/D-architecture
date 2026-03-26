@@ -4,7 +4,8 @@
 
 D-Architecture(D설계도)는 하나의 질문에서 출발합니다:
 
-> 상태 공간이 존재하고, 그 안에서 선택이 일어난다면 — 그 시스템이 붕괴하지 않기 위해 반드시 갖춰야 하는 구조는 무엇인가?
+> 그저 존재함이 있을 때, 존재함이 자신을 인지하기 위해 무엇이 필요한가
+> When existence simply is, what must it have to recognize itself?
 
 이 문서는 그 질문을 끝까지 따라간 결과입니다.
 
