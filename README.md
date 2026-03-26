@@ -5,6 +5,7 @@
 D-Architecture(D설계도)는 하나의 질문에서 출발합니다:
 
 > 그저 존재함이 있을 때, 존재함이 자신을 인지하기 위해 무엇이 필요한가
+
 > When existence simply is, what must it have to recognize itself?
 
 이 문서는 그 질문을 끝까지 따라간 결과입니다.
