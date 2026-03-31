@@ -135,7 +135,7 @@ No extension beyond the termination line.
 
 - Website: [voidafter.com](https://voidafter.com)
 - Framework: [voidafter.com/app/framework](https://voidafter.com/app/framework/index.html)
-- Full download (29 docs): [voidafter.com/app/d-arch](https://voidafter.com/app/d-arch/index.html)
+- Full download (29 docs): [voidafter.com/app/download](https://voidafter.com/app/download/index.html)
 
 ---
 
